@@ -1,3 +1,4 @@
+import './styles.css';
 import * as utilities from './utilities.js';
 
 const init = () => {
