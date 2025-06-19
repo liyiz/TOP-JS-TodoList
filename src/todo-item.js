@@ -1,6 +1,6 @@
 const renderTodo = (container) => {
     const todoBody = document.createElement('div');
-    todoBody.classList.add('page');
+    todoBody.classList.add('todo');
 
     const title = renderTitle('This is a title');
     const description = renderDescription('Lorem ipsum dolor sit met. Other nonsense for a description text box so I can pad this out more with english placeholder text.');
@@ -13,6 +13,7 @@ const renderTodo = (container) => {
 
 const renderTitle = (text) => {
     const title = document.createElement('h1');
+    title.classList.add('todo-title');
     title.textContent = text;
     // add any styling or eventlistener related stuff here?
     return title;
@@ -20,6 +21,7 @@ const renderTitle = (text) => {
 
 const renderDescription = (text) => {
     const description = document.createElement('p');
+    description.classList.add('todo-descr');
     description.textContent = text;
     // add any styling or eventlistener related stuff here?
     return description;
@@ -27,14 +29,16 @@ const renderDescription = (text) => {
 
 const renderDueDate = (date) => {
     const dueDate = document.createElement('p');
+    dueDate.classList.add('todo-ddate');
     dueDate.textContent = date; // This will need to be replaced with date data type
     return dueDate;
 }
 
 const renderPriority = () => {
     const priority = document.createElement('div');
+    priority.classList.add('todo-priority');
     // Use some kind of image for the priority?
-    priority.textContent = 'Priority placeholder';
+    priority.textContent = '❗';
     return priority;
 }
 

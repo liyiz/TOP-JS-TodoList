@@ -1,4 +1,62 @@
-body {
-    background-color: #3d444d;
-    color: #ffffff;
+:root {
+    --color-background: #121212;
+    --color-modal: 77 77 77; /* #4d4d4d */
+    --color-surface: 18, 18, 18; /* #121212 */
+    --color-error: 207, 102, 121; /* #cf6679 */
+    --color-primary: 187, 134, 252; /* #bb86fc */
+    --color-primary-variant: #3700b3;
+    --color-secondary: #03dac5;
+    --color-on-primary: #000000;
+    --color-on-secondary: #000000;
+    --color-on-background: #ffffff;
+    --color-on-surface: 255, 255, 255;
+    --color-on-error: #000000;
+    
+}
+
+* {
+    padding: 0; margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    line-height: 1.35rem;
+}
+
+html, body {
+    background: var(--color-background);
+    color: var(--color-on-background);
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* Todo item */
+.todo {
+    border: 1px solid red;
+    width: 20rem;
+
+    position: relative;
+    padding: 1rem;
+
+    display: grid;
+    gap: 0.5rem;
+
+}
+.todo-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.todo-descr {
+    max-width: 64ch;
+}
+.todo-ddate {
+
+}
+.todo-priority {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
 }
