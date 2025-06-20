@@ -8,9 +8,12 @@ let storage;
 const mainContainer = document.querySelector('main.container');
 
 const init = () => {
-    console.log(`localStorage functionality: ${checkAndAssignStorage()}`);
-    if (checkAndAssignStorage) {
-        console.log(storage.length); // this let's us check if the storage has been made use of yet at all
+    // console.log(`localStorage functionality: ${checkAndAssignStorage()}`);
+
+    let userData;
+
+    if (checkAndAssignStorage()) {
+        // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
         storage.setItem("colorSetting", "#a4509b");
         // console.dir(storage);
 
@@ -18,21 +21,43 @@ const init = () => {
         const background = document.querySelector('body');
         background.style.setProperty('background-color', currentColor);
         
-        setupStorage();
+        userData = setupStorage();
     } else {
         console.error('localStorage is not accessible.');
     }
 
-    todo.renderTodo(mainContainer);
+    todo.renderTodo(mainContainer, userData);
+
+    parseData(userData);
 
 }
 
 
+const parseData = (data) => {
+    // Parse stored data into an array to loop through
+    // console.dir(data);
+    // project -> projects -> todos
+    // console.log(data.length);
+
+    let testarray = Object.values(data);
+    testarray.forEach((value) => {
+        console.log(value);
+        let innerdata = Object.values(value);
+        innerdata.forEach((insidedata) => console.log(insidedata));
+    });
+
+}
+
+
+const renderAllTodos = () => {
+    // run todo.renderTodo() loop
+}
+
+
 const setupStorage = () => {
-    console.log(testjson)
     storage.setItem('userData', JSON.stringify(testjson));
-    const result = storage.getItem('userData');
-    console.log(JSON.parse(result));
+    const result = JSON.parse(storage.getItem('userData'));
+    return result;
 }
 
 

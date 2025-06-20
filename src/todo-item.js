@@ -1,4 +1,4 @@
-const renderTodo = (container) => {
+const renderTodo = (container, data) => {
     const todoBody = document.createElement('div');
     todoBody.classList.add('todo');
 
@@ -9,6 +9,8 @@ const renderTodo = (container) => {
 
     todoBody.append(title, description, dueDate, priority);
     container.appendChild(todoBody);
+
+    // console.dir(data);
 }
 
 const renderTitle = (text) => {
