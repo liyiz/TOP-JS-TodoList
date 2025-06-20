@@ -38,13 +38,38 @@ const parseData = (data) => {
     // console.dir(data);
     // project -> projects -> todos
     // console.log(data.length);
+    // console.log(data);
 
-    let testarray = Object.values(data);
-    testarray.forEach((value) => {
-        console.log(value);
-        let innerdata = Object.values(value);
-        innerdata.forEach((insidedata) => console.log(insidedata));
-    });
+    console.log(data.projects);
+
+    let keys = Object.keys(data.projects);
+    let values = Object.values(data.projects);
+
+    keys.forEach((key) => {
+        let entries = Object.entries(data.projects[key].todos);
+        // console.log(`${key}: ${entries}`);
+        entries.forEach((item) => console.log(item[1].title));
+    })
+
+
+
+       
+    // data.forEach((key) => console.log(data[key]));
+
+    // data.projects.forEach((project) => {
+    //     let project
+    // })
+
+    // let testarray = Object.values(data);
+    // testarray.forEach((value) => {
+    //     console.log(value);
+    //     let innerdata = Object.values(value);
+    //     innerdata.forEach((insidedata) => {
+    //         // console.log(insidedata);
+    //         let todolist = Object.values(insidedata["todos"]);
+    //         todolist.forEach((item) => console.log(Object.values(item)));
+    //     });
+    // });
 
 }
 
