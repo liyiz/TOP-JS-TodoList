@@ -2,10 +2,12 @@ const renderTodo = (container, data) => {
     const todoBody = document.createElement('div');
     todoBody.classList.add('todo');
 
-    const title = renderTitle('This is a title');
-    const description = renderDescription('Lorem ipsum dolor sit met. Other nonsense for a description text box so I can pad this out more with english placeholder text.');
-    const dueDate = renderDueDate('TBA');
-    const priority = renderPriority();
+    console.log(data);
+
+    const title = renderTitle(data.projectTitle);
+    const description = renderDescription(data.todos[0].description);
+    const dueDate = renderDueDate(data.todos[0].dueDate);
+    const priority = renderPriority(data.todos[0].priority);
 
     todoBody.append(title, description, dueDate, priority);
     container.appendChild(todoBody);
@@ -36,11 +38,11 @@ const renderDueDate = (date) => {
     return dueDate;
 }
 
-const renderPriority = () => {
+const renderPriority = (value) => {
     const priority = document.createElement('div');
     priority.classList.add('todo-priority');
     // Use some kind of image for the priority?
-    priority.textContent = '❗';
+    priority.textContent = value;
     return priority;
 }
 

@@ -26,7 +26,7 @@ const init = () => {
         console.error('localStorage is not accessible.');
     }
 
-    todo.renderTodo(mainContainer, userData);
+    // todo.renderTodo(mainContainer, userData);
 
     // get user settings data
     const userSettings = userData.settings;
@@ -35,6 +35,8 @@ const init = () => {
 
     console.dir(parsedProjectsData)
 
+    renderAllTodos(parsedProjectsData);
+
 }
 
 
@@ -42,15 +44,19 @@ const parseProjectsData = (data) => {
     // Parse stored data into an array to loop through
 
     return Object.values(data.projects).map(project => {
-        const todoArrays = Object.entries(project.todos);
-        return [project.title, todoArrays];
+        const todos = Object.values(project.todos);
+        const projectTitle = project.title;
+        return {projectTitle, todos};
     });
 
 }
 
 
-const renderAllTodos = () => {
+const renderAllTodos = (data) => {
     // run todo.renderTodo() loop
+
+    todo.renderTodo(mainContainer, data[0]);
+
 }
 
 
