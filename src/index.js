@@ -1,6 +1,7 @@
 import './styles.css';
 import * as utilities from './utilities.js';
 import * as todo from './todo-item.js';
+import * as project from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 
 let storage;
@@ -54,9 +55,15 @@ const parseProjectsData = (data) => {
 
 const renderAllTodos = (data) => {
     // run todo.renderTodo() loop
-
-    todo.renderTodo(mainContainer, data[0]);
-
+    data.forEach((value) => {
+        // Something to render a different Project Container
+        let projectContainer = project.createProjectContainer();
+        project.renderProject(projectContainer, value.projectTitle);
+        value.todos.forEach(item => {
+            todo.renderTodo(projectContainer, item);
+        });
+        mainContainer.append(projectContainer);
+    });
 }
 
 

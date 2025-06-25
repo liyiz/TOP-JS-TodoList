@@ -4,10 +4,10 @@ const renderTodo = (container, data) => {
 
     console.log(data);
 
-    const title = renderTitle(data.projectTitle);
-    const description = renderDescription(data.todos[0].description);
-    const dueDate = renderDueDate(data.todos[0].dueDate);
-    const priority = renderPriority(data.todos[0].priority);
+    const title = renderTitle(data.title);
+    const description = renderDescription(data.description);
+    const dueDate = renderDueDate(data.dueDate);
+    const priority = renderPriority(data.priority);
 
     todoBody.append(title, description, dueDate, priority);
     container.appendChild(todoBody);
