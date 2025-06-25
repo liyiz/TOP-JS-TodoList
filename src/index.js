@@ -28,48 +28,23 @@ const init = () => {
 
     todo.renderTodo(mainContainer, userData);
 
-    parseData(userData);
+    // get user settings data
+    const userSettings = userData.settings;
+    // get projects data
+    const parsedProjectsData = parseProjectsData(userData);
+
+    console.dir(parsedProjectsData)
 
 }
 
 
-const parseData = (data) => {
+const parseProjectsData = (data) => {
     // Parse stored data into an array to loop through
-    // console.dir(data);
-    // project -> projects -> todos
-    // console.log(data.length);
-    // console.log(data);
 
-    console.log(data.projects);
-
-    let keys = Object.keys(data.projects);
-    let values = Object.values(data.projects);
-
-    keys.forEach((key) => {
-        let entries = Object.entries(data.projects[key].todos);
-        // console.log(`${key}: ${entries}`);
-        entries.forEach((item) => console.log(item[1].title));
-    })
-
-
-
-       
-    // data.forEach((key) => console.log(data[key]));
-
-    // data.projects.forEach((project) => {
-    //     let project
-    // })
-
-    // let testarray = Object.values(data);
-    // testarray.forEach((value) => {
-    //     console.log(value);
-    //     let innerdata = Object.values(value);
-    //     innerdata.forEach((insidedata) => {
-    //         // console.log(insidedata);
-    //         let todolist = Object.values(insidedata["todos"]);
-    //         todolist.forEach((item) => console.log(Object.values(item)));
-    //     });
-    // });
+    return Object.values(data.projects).map(project => {
+        const todoArrays = Object.entries(project.todos);
+        return [project.title, todoArrays];
+    });
 
 }
 
