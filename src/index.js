@@ -1,7 +1,7 @@
 import './styles.css';
 import * as utilities from './utilities.js';
 import * as todo from './todo.js';
-import * as project from './project.js';
+import { Project } from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 
 let storage;
@@ -39,32 +39,10 @@ const init = () => {
     // renderAllTodos(parsedProjectsData);
 
     // Render Projects View first
-    renderProjectsView(mainContainer, parsedProjectsData);
-
-}
-
-
-const renderProjectsView = (container, data) => {
-
-    console.dir(data)
-    
-    data.forEach((project) => {
-        const card = document.createElement('div');
-        card.classList.add('project');
-
-        card.setAttribute('data-id', project.id)
-
-        card.addEventListener('click', (e) => {
-            console.dir(e);
-        });
-
-        const cardTitle = document.createElement('h1');
-        cardTitle.textContent = project.projectTitle;
-        cardTitle.classList.add('project-title');
-
-        card.append(cardTitle);
-        container.append(card);
-    });
+    // renderProjectsView(mainContainer, parsedProjectsData);
+    let project01 = new Project(parsedProjectsData[0].id, parsedProjectsData[0].projectTitle, parsedProjectsData[0].todos)
+    const cardtest = project01.renderProjectCard();
+    mainContainer.append(cardtest);
 
 }
 
@@ -86,15 +64,15 @@ const parseProjectsData = (data) => {
 
 const renderAllTodos = (data) => {
     // run todo.renderTodo() loop
-    data.forEach((value) => {
-        // Something to render a different Project Container
-        let projectContainer = project.createProjectContainer();
-        project.renderProject(projectContainer, value.projectTitle);
-        value.todos.forEach(item => {
-            todo.renderTodo(projectContainer, item);
-        });
-        mainContainer.append(projectContainer);
-    });
+    // data.forEach((value) => {
+    //     // Something to render a different Project Container
+    //     let projectContainer = project.createProjectContainer();
+    //     project.renderProject(projectContainer, value.projectTitle);
+    //     value.todos.forEach(item => {
+    //         todo.renderTodo(projectContainer, item);
+    //     });
+    //     mainContainer.append(projectContainer);
+    // });
 }
 
 
