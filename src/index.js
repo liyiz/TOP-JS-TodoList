@@ -1,6 +1,6 @@
 import './styles.css';
 import * as utilities from './utilities.js';
-import * as todo from './todo-item.js';
+import * as todo from './todo.js';
 import * as project from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 
@@ -82,5 +82,6 @@ const checkAndAssignStorage = () => {
         return false;
     }
 }
+
 
 window.addEventListener('DOMContentLoaded', init);
