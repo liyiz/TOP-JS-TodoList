@@ -34,9 +34,37 @@ const init = () => {
     // get projects data
     const parsedProjectsData = parseProjectsData(userData);
 
-    console.dir(parsedProjectsData)
+    console.dir(parsedProjectsData);
 
-    renderAllTodos(parsedProjectsData);
+    // renderAllTodos(parsedProjectsData);
+
+    // Render Projects View first
+    renderProjectsView(mainContainer, parsedProjectsData);
+
+}
+
+
+const renderProjectsView = (container, data) => {
+
+    console.dir(data)
+    
+    data.forEach((project) => {
+        const card = document.createElement('div');
+        card.classList.add('project');
+
+        card.setAttribute('data-id', project.id)
+
+        card.addEventListener('click', (e) => {
+            console.dir(e);
+        });
+
+        const cardTitle = document.createElement('h1');
+        cardTitle.textContent = project.projectTitle;
+        cardTitle.classList.add('project-title');
+
+        card.append(cardTitle);
+        container.append(card);
+    });
 
 }
 
@@ -44,10 +72,13 @@ const init = () => {
 const parseProjectsData = (data) => {
     // Parse stored data into an array to loop through
 
+    // Check if data returned is even necessary to process - feels like it can be accessed directly now due to changed json structure.
+
     return Object.values(data.projects).map(project => {
         const todos = Object.values(project.todos);
         const projectTitle = project.title;
-        return {projectTitle, todos};
+        const id = project.id;
+        return {id, projectTitle, todos};
     });
 
 }

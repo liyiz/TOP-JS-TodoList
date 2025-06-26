@@ -34,7 +34,7 @@ html, body {
 }
 
 .project {
-
+    border: 1px solid green;
 }
 
 .project-title {

@@ -2,8 +2,9 @@
     "settings": {
         "data": "some data"
     },
-    "projects": {
-        "project-01": {
+    "projects": [
+        {
+            "id" : "project-01",
             "title": "Project Title A",
             "todos": [
                 {
@@ -35,7 +36,8 @@
                 }
             ]
         },
-        "project-02": {
+        {
+            "id" : "project-02",
             "title": "Project Title B",
             "todos": [
                 {
@@ -67,5 +69,5 @@
                 }
             ]
         }
-    }
+    ]
 }
