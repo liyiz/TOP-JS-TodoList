@@ -18,7 +18,8 @@ class Project {
         card.setAttribute('data-id', this.id)
 
         card.addEventListener('click', (e) => {
-            console.dir(e);
+            console.log(e.currentTarget.dataset);
+            console.log(e.currentTarget.getAttribute('data-id'));
         });
 
         const cardTitle = document.createElement('h1');
