@@ -40,9 +40,12 @@ const init = () => {
 
     // Render Projects View first
     // renderProjectsView(mainContainer, parsedProjectsData);
-    let project01 = new Project(parsedProjectsData[0].id, parsedProjectsData[0].projectTitle, parsedProjectsData[0].todos)
-    const cardtest = project01.renderProjectCard();
-    mainContainer.append(cardtest);
+
+    parsedProjectsData.forEach((projectData) => {
+        const projectClass =  new Project(projectData.id, projectData.projectTitle, projectData.todos);
+        const projectCard = projectClass.renderProjectCard();
+        mainContainer.append(projectCard);
+    });
 
 }
 

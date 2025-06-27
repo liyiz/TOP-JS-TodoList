@@ -35,6 +35,13 @@ html, body {
 
 .project {
     border: 1px solid green;
+    width: 32rem;
+
+    position: relative;
+    padding: 2rem;
+
+    display: grid;
+    gap: 0.5rem;
 }
 
 .project-title {
