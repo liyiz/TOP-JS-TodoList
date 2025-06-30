@@ -1,6 +1,6 @@
 import './styles.css';
 import * as utilities from './utilities.js';
-import * as todo from './todo.js';
+import { Todo } from './todo.js';
 import { Project } from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 
@@ -47,6 +47,32 @@ const init = () => {
         mainContainer.append(projectCard);
     });
 
+}
+
+
+const setPage = () => {
+    // switch case to handle state via URL hash
+    // check https://developer.mozilla.org/en-US/docs/Web/API/Location/hash
+    // but essentially a tag is added to the end of the url that can be accessed via browser api
+    // https://developer.mozilla.org/en-US/docs/Web/API/URL/hash
+    // switch (window.location.hash) {
+    //     case '#menu':
+    //         renderPage(renderMenu);
+    //         break;
+    //     case '#about':
+    //         renderPage(renderAbout);
+    //         break;
+    //     default:
+    //         renderPage(renderHome);
+    // }
+
+    // Get hash, and send as an argument to renderPage
+}
+
+const renderPage = (pageFunction) => {
+    // Clear the previous page before rendering the new page
+    // container.innerHTML = '';
+    // pageFunction(container);
 }
 
 
