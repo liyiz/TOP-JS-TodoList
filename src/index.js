@@ -3,6 +3,7 @@ import * as utilities from './utilities.js';
 import { Todo } from './todo.js';
 import { Project } from './project.js';
 import testjson from './example.json' assert {type: 'json'}
+import { Page } from './page.js';
 
 let storage;
 

@@ -1,5 +1,6 @@
 import { Todo } from './todo.js'
 
+
 class Project {
     /**
      * @param {string} id
@@ -23,6 +24,8 @@ class Project {
             // console.log(e.currentTarget.dataset);
             // console.log(e.currentTarget.getAttribute('data-id'));
             // console.log(this);
+
+            // Needs to trigger a function elsewhere that has access to index.js functionality to control what renders on the page...
             this.selectProject();
         });
 
@@ -43,8 +46,24 @@ class Project {
         
     }
 
+    renderTodoList() {
+        const todoList = document.createElement('ul');
+        // loop through entire todos array
+
+        this.todos.forEach((todo) => {
+            const item = new Todo(todo.title, todo.description, todo.dueDate, todo.priority).renderTodo();
+            todoList.append(item);
+        });
+
+        return todoList
+    }
+
     selectProject() {
         console.log("Project selected, now rendering project page with todos...", this.id);
+
+        // some renderPage() function to render out a page...
+
+        
 
     }
 
