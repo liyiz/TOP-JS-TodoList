@@ -14,7 +14,7 @@ class Project {
 
     renderProjectCard() {
 
-        const card = document.createElement('div');
+        const card = document.createElement('li');
         card.classList.add('project');
 
         card.setAttribute('data-id', this.id)
@@ -30,9 +30,13 @@ class Project {
         cardTitle.textContent = this.title;
         cardTitle.classList.add('project-title');
 
+
+        // Remove later, this is to show data is working
         const exampleTodo = new Todo(this.todos[0].title, this.todos[0].description, this.todos[0].dueDate, this.todos[0].priority).renderTodo();
 
         card.append(cardTitle);
+
+        // Remove later, this is to show data is working
         card.append(exampleTodo);
 
         return card;
@@ -40,7 +44,7 @@ class Project {
     }
 
     selectProject() {
-        console.log("Project selected, now rendering project page with todos...");
+        console.log("Project selected, now rendering project page with todos...", this.id);
 
     }
 
