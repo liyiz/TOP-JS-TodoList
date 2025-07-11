@@ -14,7 +14,7 @@ class Todo {
     }
 
     renderTodo () {
-        const todoBody = document.createElement('div');
+        const todoBody = document.createElement('li');
         todoBody.classList.add('todo');
 
         const title = this.renderTitle(this.title);
