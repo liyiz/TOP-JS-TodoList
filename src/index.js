@@ -19,39 +19,33 @@ const init = () => {
 
     let userData;
 
-    if (checkAndAssignStorage()) {
-        // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
-        storage.setItem("colorSetting", "#a4509b");
-        // console.dir(storage);
+    // if (checkAndAssignStorage()) {
+    //     // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
+    //     storage.setItem("colorSetting", "#a4509b");
+    //     // console.dir(storage);
 
-        const currentColor = localStorage.getItem("colorSetting");
-        const background = document.querySelector('body');
-        background.style.setProperty('background-color', currentColor);
+    //     const currentColor = localStorage.getItem("colorSetting");
+    //     const background = document.querySelector('body');
+    //     background.style.setProperty('background-color', currentColor);
         
-        userData = setupStorage();
-    } else {
-        console.error('localStorage is not accessible.');
-    }
+    //     userData = setupStorage();
+    // } else {
+    //     console.error('localStorage is not accessible.');
+    // }
 
-    // get user settings data
-    const userSettings = userData.settings;
-    // get projects data
-    const parsedProjectsData = parseProjectsData(userData);
-    appData = parsedProjectsData;
+    // // get user settings data
+    // const userSettings = userData.settings;
+    // // get projects data
+    // const parsedProjectsData = parseProjectsData(userData);
+    // appData = parsedProjectsData;
 
-    const mainPage = new Page('home', document.querySelector('body'));
+    // const mainPage = new Page('home', document.querySelector('body'));
 
-    const projectPages = [];
-    const projectList = document.createElement('ul');
+    // const projectPages = [];
+    // const projectList = document.createElement('ul');
 
-    parsedProjectsData.forEach((projectData) => {
-        const projectClass =  new Project(projectData.id, projectData.projectTitle, projectData.todos);
-        
-        // console.log(projectClass.todos[0]);
-        
-    });
 
-    mainContainer.append(projectList);
+    // mainContainer.append(projectList);
 
 }
 
@@ -59,6 +53,14 @@ const init = () => {
 const displayData = () => {
     console.dir(appData);
 }
+
+
+// function that adds a project data object to the overall data
+const createNewProject = (id, title) => {
+    // New project assumes an empty todos array first
+    const project = new Project(id, title);
+}
+
 
 
 const selectProject = () => {
