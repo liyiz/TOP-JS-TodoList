@@ -7,7 +7,12 @@ import { Page } from './page.js';
 
 let storage;
 
+let appData;
+
 const mainContainer = document.querySelector('main.container');
+const currentPage = ''; // hold page state
+const currentProjectID = ''; // hold selected project
+const currentTodoID = ''; // hold selected todo
 
 const init = () => {
     // console.log(`localStorage functionality: ${checkAndAssignStorage()}`);
@@ -28,27 +33,22 @@ const init = () => {
         console.error('localStorage is not accessible.');
     }
 
-    // todo.renderTodo(mainContainer, userData);
-
     // get user settings data
     const userSettings = userData.settings;
     // get projects data
     const parsedProjectsData = parseProjectsData(userData);
+    appData = parsedProjectsData;
 
-    console.dir(parsedProjectsData);
+    const mainPage = new Page('home', document.querySelector('body'));
 
-    // renderAllTodos(parsedProjectsData);
-
-    // Render Projects View first
-    // renderProjectsView(mainContainer, parsedProjectsData);
-
+    const projectPages = [];
     const projectList = document.createElement('ul');
 
     parsedProjectsData.forEach((projectData) => {
         const projectClass =  new Project(projectData.id, projectData.projectTitle, projectData.todos);
-        console.log(projectClass.todos[0]);
-        const projectCard = projectClass.renderProjectCard();
-        projectList.append(projectCard);
+        
+        // console.log(projectClass.todos[0]);
+        
     });
 
     mainContainer.append(projectList);
@@ -56,29 +56,17 @@ const init = () => {
 }
 
 
-const setPage = () => {
-    // switch case to handle state via URL hash
-    // check https://developer.mozilla.org/en-US/docs/Web/API/Location/hash
-    // but essentially a tag is added to the end of the url that can be accessed via browser api
-    // https://developer.mozilla.org/en-US/docs/Web/API/URL/hash
-    // switch (window.location.hash) {
-    //     case '#menu':
-    //         renderPage(renderMenu);
-    //         break;
-    //     case '#about':
-    //         renderPage(renderAbout);
-    //         break;
-    //     default:
-    //         renderPage(renderHome);
-    // }
-
-    // Get hash, and send as an argument to renderPage
+const displayData = () => {
+    console.dir(appData);
 }
 
-const renderPage = (pageFunction) => {
-    // Clear the previous page before rendering the new page
-    // container.innerHTML = '';
-    // pageFunction(container);
+
+const selectProject = () => {
+
+    console.log("Project selected, now rendering project page with todos...", this.id);
+
+    // some renderPage() function to render out a page...
+
 }
 
 
@@ -97,19 +85,6 @@ const parseProjectsData = (data) => {
 }
 
 
-const renderAllTodos = (data) => {
-    // run todo.renderTodo() loop
-    // data.forEach((value) => {
-    //     // Something to render a different Project Container
-    //     let projectContainer = project.createProjectContainer();
-    //     project.renderProject(projectContainer, value.projectTitle);
-    //     value.todos.forEach(item => {
-    //         todo.renderTodo(projectContainer, item);
-    //     });
-    //     mainContainer.append(projectContainer);
-    // });
-}
-
 
 const setupStorage = () => {
     storage.setItem('userData', JSON.stringify(testjson));
@@ -127,5 +102,47 @@ const checkAndAssignStorage = () => {
     }
 }
 
+
+
+// Project render functions
+
+const renderProjectCard = () => {
+
+        const card = document.createElement('li');
+        card.classList.add('project');
+
+        card.setAttribute('data-id', this.id)
+
+        const cardTitle = document.createElement('h1');
+        cardTitle.textContent = this.title;
+        cardTitle.classList.add('project-title');
+
+
+        // Remove later, this is to show data is working
+        const exampleTodo = new Todo(this.todos[0].title, this.todos[0].description, this.todos[0].dueDate, this.todos[0].priority).renderTodo();
+
+        card.append(cardTitle);
+
+        // Remove later, this is to show data is working
+        card.append(exampleTodo);
+
+        return card;
+        
+    }
+
+const renderTodoList = () => {
+        const todoList = document.createElement('ul');
+        // loop through entire todos array
+
+        this.todos.forEach((todo) => {
+            const item = new Todo(todo.title, todo.description, todo.dueDate, todo.priority).renderTodo();
+            todoList.append(item);
+        });
+
+        return todoList
+    }
+
+
+window.showdata = displayData;
 
 window.addEventListener('DOMContentLoaded', init);

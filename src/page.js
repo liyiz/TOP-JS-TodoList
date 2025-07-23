@@ -8,12 +8,25 @@ class Page {
         this.container = container;
     }
 
-    // What functions do I need to render a page with?
-
     clearPage() {
-        // Clear the previous page before rendering the new page
         container.innerHTML = '';
     }
+
+    // renderPage would require what?
+    // it would need to know what page it is rendering: Projects, or Todos
+    renderPage(pageFunction) {
+        this.clearPage();
+        pageFunction();
+    }
+
+    renderMainPage() {
+        // Render the main menu that lists all the project cards
+    }
+
+    renderProjectPage() {
+        // DOM elements to render the project page
+    }
+
 }
 
 export { Page }
