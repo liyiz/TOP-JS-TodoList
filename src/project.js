@@ -12,9 +12,9 @@ class Project {
         this.todos = todos;
     }
 
-
-
-
+    getTodos () {
+        return this.todos;
+    }
 }
 
 export {

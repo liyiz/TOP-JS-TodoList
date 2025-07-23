@@ -6,13 +6,12 @@ import testjson from './example.json' assert {type: 'json'}
 import { Page } from './page.js';
 
 let storage;
-
 let appData;
 
 const mainContainer = document.querySelector('main.container');
-const currentPage = ''; // hold page state
-const currentProjectID = ''; // hold selected project
-const currentTodoID = ''; // hold selected todo
+const currentPage = null; // hold page state
+const currentProjectID = null; // hold selected project
+const currentTodoID = null; // hold selected todo
 
 const init = () => {
     // console.log(`localStorage functionality: ${checkAndAssignStorage()}`);
@@ -47,11 +46,14 @@ const init = () => {
 
     // mainContainer.append(projectList);
 
+
+
 }
 
 
 const displayData = () => {
-    console.dir(appData);
+    // console.dir(appData);
+    createNewProject('20', 'Project One');
 }
 
 
@@ -59,9 +61,18 @@ const displayData = () => {
 const createNewProject = (id, title) => {
     // New project assumes an empty todos array first
     const project = new Project(id, title);
+
+    console.dir(project.getTodos())
 }
 
+const createNewTodo = () => {
+    // New todo
+}
 
+const createUserSettings = () => {
+    // Create user settings data object
+    // Will need userSettings.js and UserSettings class
+}
 
 const selectProject = () => {
 
