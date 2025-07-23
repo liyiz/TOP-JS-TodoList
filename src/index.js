@@ -33,6 +33,12 @@ const init = () => {
 
     appData["projects"].push(firstProject);
 
+    // add some dummy todos to first project
+    for(let i = 0; i < 3; i++) {
+        const todo = createNewTodo(`My Task ${i+1}`, 'Lorem upsum dolor sit met', 'Monday', 'Medium');
+        appData["projects"][0].todos.push(todo);
+    }
+
 
     // if (checkAndAssignStorage()) {
     //     // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
@@ -78,8 +84,11 @@ const createNewProject = (id, title) => {
     return project;
 }
 
-const createNewTodo = () => {
+const createNewTodo = (title, description, dueDate, priority) => {
     // New todo
+    const todo = new Todo(title, description, dueDate, priority)
+
+    return todo;
 }
 
 const createUserSettings = () => {
@@ -167,6 +176,50 @@ const renderTodoList = () => {
 
         return todoList
     }
+
+const renderTodo =  () => {
+    const todoBody = document.createElement('li');
+    todoBody.classList.add('todo');
+
+    const title = this.renderTitle(this.title);
+    const description = this.renderDescription(this.description);
+    const dueDate = this.renderDueDate(this.dueDate);
+    const priority = this.renderPriority(this.priority);
+
+    todoBody.append(title, description, dueDate, priority);
+    return todoBody
+}
+
+const renderTitle =  (text) =>  {
+    const title = document.createElement('h1');
+    title.classList.add('todo-title');
+    title.textContent = text;
+    // add any styling or eventlistener related stuff here?
+    return title;
+}
+
+const renderDescription =  (text) =>  {
+    const description = document.createElement('p');
+    description.classList.add('todo-descr');
+    description.textContent = text;
+    // add any styling or eventlistener related stuff here?
+    return description;
+}
+
+const renderDueDate =  (date) =>  {
+    const dueDate = document.createElement('p');
+    dueDate.classList.add('todo-ddate');
+    dueDate.textContent = date; // This will need to be replaced with date data type
+    return dueDate;
+}
+
+const renderPriority =  (value) =>  {
+    const priority = document.createElement('div');
+    priority.classList.add('todo-priority');
+    // Use some kind of image for the priority?
+    priority.textContent = value;
+    return priority;
+}
 
 
 window.showdata = displayData;
