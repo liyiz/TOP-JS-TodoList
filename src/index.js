@@ -5,8 +5,8 @@ import { Project } from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 import { Page } from './page.js';
 
-let storage;
-let appData;
+let storage; // holds data from localStorage api
+let appData; // holds app data
 
 const mainContainer = document.querySelector('main.container');
 const currentPage = null; // hold page state
@@ -16,7 +16,23 @@ const currentTodoID = null; // hold selected todo
 const init = () => {
     // console.log(`localStorage functionality: ${checkAndAssignStorage()}`);
 
-    let userData;
+    // check if local storage data exists
+
+    // if local storage data exists, load it into the app - into appData
+
+    // if there is no data in local storage (first time running app), then we initialise appData as fresh
+    appData = {
+        "settings" : {
+            "data": "some data"
+        },
+        "projects": []
+    };
+
+    // consider generating the id instead of this string I'm giving it
+    const firstProject = createNewProject('project-001', 'My First Project');
+
+    appData["projects"].push(firstProject);
+
 
     // if (checkAndAssignStorage()) {
     //     // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
@@ -46,14 +62,11 @@ const init = () => {
 
     // mainContainer.append(projectList);
 
-
-
 }
 
 
 const displayData = () => {
-    // console.dir(appData);
-    createNewProject('20', 'Project One');
+    console.dir(appData);
 }
 
 
@@ -62,7 +75,7 @@ const createNewProject = (id, title) => {
     // New project assumes an empty todos array first
     const project = new Project(id, title);
 
-    console.dir(project.getTodos())
+    return project;
 }
 
 const createNewTodo = () => {
