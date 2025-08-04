@@ -60,9 +60,20 @@ const init = () => {
     const label = document.createElement('label');
     const input = document.createElement('input');
 
-    label.textContent = 'Project Name';
+    label.textContent = 'Project Title';
 
-    div.append(label, input);
+    const submitBtn = document.createElement('button');
+    submitBtn.textContent = 'Save';
+    submitBtn.setAttribute('type', 'submit');
+
+    submitBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        const newProjectTitle = input.value;
+        const newProject = createNewProject('#000', newProjectTitle);
+        addNewProject(newProject);
+    });
+
+    div.append(label, input, submitBtn);
     form.append(div);
     mainContainer.append(form);
 
