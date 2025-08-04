@@ -39,15 +39,32 @@ const init = () => {
         appData["projects"][0].todos.push(todo);
     }
 
-    const testbtn = makeDebugButton('test me', () => {console.log("the test works!")})
+    const testbtn = makeDebugButton('show data', displayData);
     mainContainer.append(testbtn);
 
 
     const addNewProjectBtn = makeDebugButton('Add New Project', () => {
-        const newProject = createNewProject('project-test', 'Generated New Project')
+        // TODO generate id
+        const newProject = createNewProject('project-test', 'Generated New Project');
+        
         addNewProject(newProject);
     }); // TODO add function that adds new project
     mainContainer.append(addNewProjectBtn);
+
+
+    // Create input form for projects
+
+    const form = document.createElement('form');
+
+    const div = document.createElement('div');
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+
+    label.textContent = 'Project Name';
+
+    div.append(label, input);
+    form.append(div);
+    mainContainer.append(form);
 
     // if (checkAndAssignStorage()) {
     //     // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
