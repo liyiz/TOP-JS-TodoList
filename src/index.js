@@ -31,7 +31,7 @@ const init = () => {
     // consider generating the id instead of this string I'm giving it
     const firstProject = createNewProject('project-001', 'My First Project');
 
-    appData["projects"].push(firstProject);
+    addNewProject(firstProject);
 
     // add some dummy todos to first project
     for(let i = 0; i < 3; i++) {
@@ -39,6 +39,15 @@ const init = () => {
         appData["projects"][0].todos.push(todo);
     }
 
+    const testbtn = makeDebugButton('test me', () => {console.log("the test works!")})
+    mainContainer.append(testbtn);
+
+
+    const addNewProjectBtn = makeDebugButton('Add New Project', () => {
+        const newProject = createNewProject('project-test', 'Generated New Project')
+        addNewProject(newProject);
+    }); // TODO add function that adds new project
+    mainContainer.append(addNewProjectBtn);
 
     // if (checkAndAssignStorage()) {
     //     // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
@@ -68,6 +77,11 @@ const init = () => {
 
     // mainContainer.append(projectList);
 
+}
+
+
+const addNewProject = (project) => {
+    appData["projects"].push(project);
 }
 
 
@@ -137,6 +151,16 @@ const checkAndAssignStorage = () => {
     }
 }
 
+
+// Test functions - like make debug buttons
+
+const makeDebugButton = (btnLabel, btnFunc) => {
+    const button = document.createElement('button');
+    button.textContent = btnLabel;
+    button.onclick = btnFunc;
+
+    return button;
+}
 
 
 // Project render functions
