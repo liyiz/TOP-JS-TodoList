@@ -23,21 +23,24 @@ const init = () => {
     // if there is no data in local storage (first time running app), then we initialise appData as fresh
     appData = {
         "settings" : {
-            "data": "some data"
+            "last open project": 0
         },
         "projects": []
     };
 
-    // consider generating the id instead of this string I'm giving it
-    const firstProject = createNewProject('project-001', 'My First Project');
+    // // consider generating the id instead of this string I'm giving it
+    // const firstProject = createNewProject('project-001', 'My First Project');
+    // addNewProject(firstProject);
 
-    addNewProject(firstProject);
+    // // Add some test todos - issue with run order of when project is added and when this code can then find valid projects object to add todos to
+    // if (appData["projects"][0]) {
+    //     // add some dummy todos to first project
+    //     for(let i = 0; i < 3; i++) {
+    //         const todo = createNewTodo(`My Task ${i+1}`, 'Lorem upsum dolor sit met', 'Monday', 'Medium');
+    //         appData["projects"][0].todos.push(todo);
+    //     }
+    // }
 
-    // add some dummy todos to first project
-    for(let i = 0; i < 3; i++) {
-        const todo = createNewTodo(`My Task ${i+1}`, 'Lorem upsum dolor sit met', 'Monday', 'Medium');
-        appData["projects"][0].todos.push(todo);
-    }
 
     const testbtn = makeDebugButton('show data', displayData);
     mainContainer.append(testbtn);
@@ -49,7 +52,14 @@ const init = () => {
         
         addNewProject(newProject);
     }); // TODO add function that adds new project
-    mainContainer.append(addNewProjectBtn);
+
+    const addNewLocalStorageTestData = makeDebugButton('Add new local storage test data', () => {
+        // Creates dummy appData and saves to local storage under "userData"
+        // need to store `window['localStorage']` to a global to access in this code.
+        window['localStorage'].setItem('userData', JSON.stringify(createTestAppData()));
+    });
+
+    mainContainer.append(addNewProjectBtn, addNewLocalStorageTestData);
 
 
     // Create input form for projects
@@ -68,8 +78,13 @@ const init = () => {
 
     submitBtn.addEventListener('click', (event) => {
         event.preventDefault();
+
+        // TODO run a check to make sure the string is not empty
+        // otherwise create fall back name for the project.
+        // TODO also remember to enable project name editing.
+
         const newProjectTitle = input.value;
-        const newProject = createNewProject('#000', newProjectTitle);
+        const newProject = createNewProject('NO-ID-TODO', newProjectTitle);
         addNewProject(newProject);
     });
 
@@ -77,16 +92,39 @@ const init = () => {
     form.append(div);
     mainContainer.append(form);
 
-    // if (checkAndAssignStorage()) {
-    //     // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
-    //     storage.setItem("colorSetting", "#a4509b");
-    //     // console.dir(storage);
 
-    //     const currentColor = localStorage.getItem("colorSetting");
-    //     const background = document.querySelector('body');
-    //     background.style.setProperty('background-color', currentColor);
+
+
+    // Local Storage
+
+        // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
+        // storage.setItem("colorSetting", "#a4509b");
+        // console.dir(storage);
+
+        // const currentColor = localStorage.getItem("colorSetting");
+        // const background = document.querySelector('body');
+        // background.style.setProperty('background-color', currentColor);
         
-    //     userData = setupStorage();
+        // userData = setupStorage();
+
+    // 1. Check if local storage exists
+    if (isStorageAvailable()) {
+        // 1b. Check if local storage has appData already
+
+        // Need to make dummy appData to install in local storage first
+
+        const result = JSON.parse(window['localStorage'].getItem('userData'));
+        appData = result;
+
+        // const parsedProjectsData = parseProjectsData(userData);
+        // appData = parsedProjectsData;
+
+    }
+    // If local storage is available && there is no existing appData stored
+    // if (isStorageAvailable()) {
+    // If local storage is available && there is existing appData
+
+    // If local storage is not available
     // } else {
     //     console.error('localStorage is not accessible.');
     // }
@@ -108,8 +146,36 @@ const init = () => {
 }
 
 
+const createTestAppData = () => {
+    return {
+        "settings" : {
+            "last open project": 0
+        },
+        "projects": [
+            { "id": "project-001", "title": "My First Project", 
+                "todos": [
+                    { "title": "My Task 1", "description": "Lorem upsum dolor sit met", "dueDate": "Monday", "priority": "Medium" },
+                    { "title": "My Task 2", "description": "Lorem upsum dolor sit met", "dueDate": "Tuesday", "priority": "Low" },
+                    { "title": "My Task 3", "description": "Lorem upsum dolor sit met", "dueDate": "Wednesday", "priority": "High" }
+                ]
+            },
+            { "id": "project-002", "title": "My Second Project", 
+                "todos": [
+                    { "title": "My Task 4", "description": "Lorem upsum dolor sit met", "dueDate": "Thursday", "priority": "Low" }
+                ]
+            },
+            { "id": "project-003", "title": "My Third Project", 
+                "todos": [
+                    { "title": "My Task 5", "description": "Lorem upsum dolor sit met", "dueDate": "Friday", "priority": "High" }
+                ]
+            }
+        ]
+    };
+}
+
 const addNewProject = (project) => {
     appData["projects"].push(project);
+    console.log('New project ', project, 'added to appData.'); // for debug purposes
 }
 
 
@@ -170,11 +236,13 @@ const setupStorage = () => {
 }
 
 
-const checkAndAssignStorage = () => {
+const isStorageAvailable = () => {
     if (utilities.storageAvailable('localStorage')) {
-        storage = window['localStorage']; // loads the localStorage to storage variable initialized on ln 4
+        // storage = window['localStorage'];
+        console.log('Local Storage is available.');
         return true;
     } else {
+        console.error('Local Storage is not available.');
         return false;
     }
 }
