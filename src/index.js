@@ -31,21 +31,17 @@ const init = () => {
         };
     }
 
-
-
-
-
-    const testbtn = makeDebugButton('show data', displayData);
+    const testbtn = createDebugButton('show data', displayData);
     mainContainer.append(testbtn);
 
-    const addNewProjectBtn = makeDebugButton('Add New Project', () => {
+    const addNewProjectBtn = createDebugButton('Add New Project', () => {
         // TODO generate id
         const newProject = createNewProject('project-test', 'Generated New Project');
         
         addNewProject(newProject);
     }); // TODO add function that adds new project
 
-    const addNewLocalStorageTestData = makeDebugButton('Add new local storage test data', () => {
+    const addNewLocalStorageTestData = createDebugButton('Add new local storage test data', () => {
         // Creates dummy appData and saves to local storage under "userData"
         // need to store `window['localStorage']` to a global to access in this code.
         window['localStorage'].setItem('userData', JSON.stringify(createTestAppData()));
@@ -84,22 +80,12 @@ const init = () => {
     form.append(div);
     mainContainer.append(form);
 
-    // Create project list
-
     const projectsListContainer = document.createElement('div');
-    const projectH1 = document.createElement('h1');
-    
-    projectH1.textContent = 'Projects';
-    projectsListContainer.append(projectH1);
-    // Loop through appData['projects'] and get all titles
-    appData['projects'].forEach((project) => {
-        const projectTitle = document.createElement('h4');
-        projectTitle.textContent = project['title'];
-        projectsListContainer.append(projectTitle);
-    });
+    projectsListContainer.id = 'projects-list';
+
+    renderProjectList(projectsListContainer); // this is just here for testing
 
     mainContainer.append(projectsListContainer);
-
 
 
     // Local Storage
@@ -170,6 +156,18 @@ const createTestAppData = () => {
 const addNewProject = (project) => {
     appData["projects"].push(project);
     console.log('New project ', project, 'added to appData.'); // for debug purposes
+    
+    updateLocalStorage();
+
+    // TODO remove this from here
+
+    // find the projects list element container
+    const projectsContainer = document.querySelector('#projects-list');
+    // clear it to blank
+    projectsContainer.innerHTML = '';
+    // re-render the contents again from the updated appData
+    const newContent = renderProjectList(projectsContainer);
+    mainContainer.append(newContent);
 }
 
 
@@ -187,6 +185,30 @@ const createNewProject = (id, title) => {
     const project = new Project(id, title);
 
     return project;
+}
+
+const deleteProjectData = (projectID) => {
+    // Ideally we identify the project to delete with project ID - but that is a TODO
+    const targetIndex = appData['projects'].findIndex(obj => obj.id === projectID);
+    appData['projects'].splice(targetIndex, 1);
+    console.log(displayData());
+
+    updateLocalStorage();
+
+
+    // TODO remove this from here
+
+    // find the projects list element container
+    const projectsContainer = document.querySelector('#projects-list');
+    // clear it to blank
+    projectsContainer.innerHTML = '';
+    // re-render the contents again from the updated appData
+    const newContent = renderProjectList(projectsContainer);
+    mainContainer.append(newContent);
+}
+
+const updateLocalStorage = () => {
+    window['localStorage'].setItem('userData', JSON.stringify(appData));
 }
 
 const createNewTodo = (title, description, dueDate, priority) => {
@@ -247,7 +269,7 @@ const isStorageAvailable = () => {
 
 // Test functions - like make debug buttons
 
-const makeDebugButton = (btnLabel, btnFunc) => {
+const createDebugButton = (btnLabel, btnFunc) => {
     const button = document.createElement('button');
     button.textContent = btnLabel;
     button.onclick = btnFunc;
@@ -257,6 +279,29 @@ const makeDebugButton = (btnLabel, btnFunc) => {
 
 
 // Project render functions
+
+const renderProjectList = (container) => {
+    // Create project list
+
+    const projectH1 = document.createElement('h1');
+    
+    projectH1.textContent = 'Projects';
+    container.append(projectH1);
+    // Loop through appData['projects'] and get all titles
+    appData['projects'].forEach((project) => {
+        const projectTitle = document.createElement('h4');
+        projectTitle.textContent = project.title;
+
+        const projectID = project.id;
+
+        const deleteBtn = createDebugButton('delete', () => { deleteProjectData(projectID) });
+
+        container.append(projectTitle, deleteBtn);
+    });
+
+    return container;
+    
+}
 
 const renderProjectCard = () => {
 
