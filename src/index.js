@@ -14,37 +14,29 @@ const currentProjectID = null; // hold selected project
 const currentTodoID = null; // hold selected todo
 
 const init = () => {
-    // console.log(`localStorage functionality: ${checkAndAssignStorage()}`);
 
-    // check if local storage data exists
+    // 1. Check if local storage exists
+    if (isStorageAvailable()) {
+        // Parse the localStorage data and set in the current session appData
+        const result = JSON.parse(window['localStorage'].getItem('userData'));
+        appData = result;
 
-    // if local storage data exists, load it into the app - into appData
+    } else {
+        // if there is no data in local storage (first time running app), then we initialise appData as fresh
+        appData = {
+            "settings" : {
+                "last open project": 0
+            },
+            "projects": []
+        };
+    }
 
-    // if there is no data in local storage (first time running app), then we initialise appData as fresh
-    appData = {
-        "settings" : {
-            "last open project": 0
-        },
-        "projects": []
-    };
 
-    // // consider generating the id instead of this string I'm giving it
-    // const firstProject = createNewProject('project-001', 'My First Project');
-    // addNewProject(firstProject);
 
-    // // Add some test todos - issue with run order of when project is added and when this code can then find valid projects object to add todos to
-    // if (appData["projects"][0]) {
-    //     // add some dummy todos to first project
-    //     for(let i = 0; i < 3; i++) {
-    //         const todo = createNewTodo(`My Task ${i+1}`, 'Lorem upsum dolor sit met', 'Monday', 'Medium');
-    //         appData["projects"][0].todos.push(todo);
-    //     }
-    // }
 
 
     const testbtn = makeDebugButton('show data', displayData);
     mainContainer.append(testbtn);
-
 
     const addNewProjectBtn = makeDebugButton('Add New Project', () => {
         // TODO generate id
@@ -92,6 +84,21 @@ const init = () => {
     form.append(div);
     mainContainer.append(form);
 
+    // Create project list
+
+    const projectsListContainer = document.createElement('div');
+    const projectH1 = document.createElement('h1');
+    
+    projectH1.textContent = 'Projects';
+    projectsListContainer.append(projectH1);
+    // Loop through appData['projects'] and get all titles
+    appData['projects'].forEach((project) => {
+        const projectTitle = document.createElement('h4');
+        projectTitle.textContent = project['title'];
+        projectsListContainer.append(projectTitle);
+    });
+
+    mainContainer.append(projectsListContainer);
 
 
 
@@ -107,19 +114,6 @@ const init = () => {
         
         // userData = setupStorage();
 
-    // 1. Check if local storage exists
-    if (isStorageAvailable()) {
-        // 1b. Check if local storage has appData already
-
-        // Need to make dummy appData to install in local storage first
-
-        const result = JSON.parse(window['localStorage'].getItem('userData'));
-        appData = result;
-
-        // const parsedProjectsData = parseProjectsData(userData);
-        // appData = parsedProjectsData;
-
-    }
     // If local storage is available && there is no existing appData stored
     // if (isStorageAvailable()) {
     // If local storage is available && there is existing appData
@@ -183,6 +177,9 @@ const displayData = () => {
     console.dir(appData);
 }
 
+const getAppData = () => {
+    return appData['projects'][0]['title'];
+}
 
 // function that adds a project data object to the overall data
 const createNewProject = (id, title) => {
@@ -343,5 +340,6 @@ const renderPriority =  (value) =>  {
 
 
 window.showdata = displayData;
+window.appData = getAppData;
 
 window.addEventListener('DOMContentLoaded', init);
