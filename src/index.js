@@ -5,6 +5,8 @@ import { Project } from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 import { Page } from './page.js';
 
+import { uuidv4 } from './uuidv4.js';
+
 let storage; // holds data from localStorage api
 let appData; // holds app data
 
@@ -14,6 +16,8 @@ const currentProjectID = null; // hold selected project
 const currentTodoID = null; // hold selected todo
 
 const init = () => {
+
+    console.log(uuidv4());
 
     // 1. Check if local storage exists
     if (isStorageAvailable()) {
