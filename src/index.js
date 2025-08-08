@@ -5,8 +5,6 @@ import { Project } from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 import { Page } from './page.js';
 
-import { uuidv4 } from './uuidv4.js';
-
 let storage; // holds data from localStorage api
 let appData; // holds app data
 
@@ -16,8 +14,6 @@ const currentProjectID = null; // hold selected project
 const currentTodoID = null; // hold selected todo
 
 const init = () => {
-
-    console.log(uuidv4());
 
     // 1. Check if local storage exists
     if (isStorageAvailable()) {
@@ -40,7 +36,7 @@ const init = () => {
 
     const addNewProjectBtn = createDebugButton('Add New Project', () => {
         // TODO generate id
-        const newProject = createNewProject('project-test', 'Generated New Project');
+        const newProject = createNewProject('Generated New Project');
         
         addNewProject(newProject);
     }); // TODO add function that adds new project
@@ -76,7 +72,7 @@ const init = () => {
         // TODO also remember to enable project name editing.
 
         const newProjectTitle = input.value;
-        const newProject = createNewProject('NO-ID-TODO', newProjectTitle);
+        const newProject = createNewProject(newProjectTitle);
         addNewProject(newProject);
     });
 
@@ -184,9 +180,9 @@ const getAppData = () => {
 }
 
 // function that adds a project data object to the overall data
-const createNewProject = (id, title) => {
+const createNewProject = (title) => {
     // New project assumes an empty todos array first
-    const project = new Project(id, title);
+    const project = new Project(title);
 
     return project;
 }

@@ -1,13 +1,13 @@
 import { Todo } from './todo.js'
+import { uuidv4 } from './utilities.js';
 
 class Project {
     /**
-     * @param {string} id
      * @param {string} title
      * @param {Array} todos
      */
-    constructor(id, title, todos = []) {
-        this.id = id;
+    constructor(title, todos = []) {
+        this.id = this.createUUID();
         this.title = title;
         this.todos = todos;
     }
@@ -15,6 +15,11 @@ class Project {
     getTodos () {
         return this.todos;
     }
+
+    createUUID () {
+        return uuidv4("project");
+    }
+
 }
 
 export {
