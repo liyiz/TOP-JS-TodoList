@@ -9,6 +9,7 @@ let storage; // holds data from localStorage api
 let appData; // holds app data
 
 const mainContainer = document.querySelector('main.container');
+const projectsListElID = 'projects-list';
 const currentPage = null; // hold page state
 const currentProjectID = null; // hold selected project
 const currentTodoID = null; // hold selected todo
@@ -81,11 +82,12 @@ const init = () => {
     mainContainer.append(form);
 
     const projectsListContainer = document.createElement('div');
-    projectsListContainer.id = 'projects-list';
-
-    renderProjectList(projectsListContainer); // this is just here for testing
-
+    projectsListContainer.id = projectsListElID;
     mainContainer.append(projectsListContainer);
+
+    renderProjectList(`#${projectsListElID}`); // this is just here for testing
+
+
 
 
     // Local Storage
@@ -159,16 +161,18 @@ const addNewProject = (project) => {
     
     updateLocalStorage();
 
-    // TODO remove this from here
+    clearDOM(`#${projectsListElID}`);
 
-    // find the projects list element container
-    const projectsContainer = document.querySelector('#projects-list');
-    // clear it to blank
-    projectsContainer.innerHTML = '';
+    // Clear the container
+    // then I need to have a reference to the container anyway to populate with new content...
     // re-render the contents again from the updated appData
-    const newContent = renderProjectList(projectsContainer);
+    const newContent = renderProjectList(`#${projectsListElID}`);
     mainContainer.append(newContent);
 }
+
+
+
+
 
 
 const displayData = () => {
@@ -187,7 +191,7 @@ const createNewProject = (title) => {
     return project;
 }
 
-const deleteProjectData = (projectID) => {
+const deleteProject = (projectID) => {
     // Ideally we identify the project to delete with project ID - but that is a TODO
     const targetIndex = appData['projects'].findIndex(obj => obj.id === projectID);
     appData['projects'].splice(targetIndex, 1);
@@ -195,15 +199,9 @@ const deleteProjectData = (projectID) => {
 
     updateLocalStorage();
 
-
-    // TODO remove this from here
-
-    // find the projects list element container
-    const projectsContainer = document.querySelector('#projects-list');
-    // clear it to blank
-    projectsContainer.innerHTML = '';
+    clearDOM(`#${projectsListElID}`);
     // re-render the contents again from the updated appData
-    const newContent = renderProjectList(projectsContainer);
+    const newContent = renderProjectList(`#${projectsListElID}`);
     mainContainer.append(newContent);
 }
 
@@ -280,11 +278,10 @@ const createDebugButton = (btnLabel, btnFunc) => {
 
 // Project render functions
 
-const renderProjectList = (container) => {
-    // Create project list
-
+const renderProjectList = (selector) => {
+    // Create project list child elements
+    const container = document.querySelector(selector);
     const projectH1 = document.createElement('h1');
-    
     projectH1.textContent = 'Projects';
     container.append(projectH1);
     // Loop through appData['projects'] and get all titles
@@ -294,7 +291,7 @@ const renderProjectList = (container) => {
 
         const projectID = project.id;
 
-        const deleteBtn = createDebugButton('delete', () => { deleteProjectData(projectID) });
+        const deleteBtn = createDebugButton('delete', () => { deleteProject(projectID) });
 
         container.append(projectTitle, deleteBtn);
     });
@@ -381,6 +378,11 @@ const renderPriority =  (value) =>  {
     // Use some kind of image for the priority?
     priority.textContent = value;
     return priority;
+}
+
+
+const clearDOM = (selector) => {
+    document.querySelector(selector).innerHTML = '';
 }
 
 
