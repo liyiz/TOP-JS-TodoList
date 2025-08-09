@@ -195,7 +195,7 @@ const deleteProject = (projectID) => {
     // Ideally we identify the project to delete with project ID - but that is a TODO
     const targetIndex = appData['projects'].findIndex(obj => obj.id === projectID);
     appData['projects'].splice(targetIndex, 1);
-    console.log(displayData());
+    displayData();
 
     updateLocalStorage();
 
@@ -286,14 +286,23 @@ const renderProjectList = (selector) => {
     container.append(projectH1);
     // Loop through appData['projects'] and get all titles
     appData['projects'].forEach((project) => {
-        const projectTitle = document.createElement('h4');
-        projectTitle.textContent = project.title;
+        const div = document.createElement('div');
+        const title = document.createElement('h4');
+        title.textContent = project.title;
 
         const projectID = project.id;
 
-        const deleteBtn = createDebugButton('delete', () => { deleteProject(projectID) });
+        const deleteBtn = createDebugButton('delete', (e) => { 
+            e.stopPropagation();
+            deleteProject(projectID) 
+        });
 
-        container.append(projectTitle, deleteBtn);
+        div.addEventListener('click', () => {
+            console.log('div clicked');
+        });
+
+        div.append(title, deleteBtn);
+        container.append(div);
     });
 
     return container;
