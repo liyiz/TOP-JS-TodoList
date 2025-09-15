@@ -4,27 +4,28 @@ import { Todo } from './todo.js';
 import { Project } from './project.js';
 import testjson from './example.json' assert {type: 'json'}
 import { Page } from './page.js';
+import { createForm, bindHandler } from './projectForm.js';
 
 let storage; // holds data from localStorage api
-let appData; // holds app data
+let sessionData; // holds app data
 
 const mainContainer = document.querySelector('main.container');
 const projectsListElID = 'projects-list';
-const currentPage = null; // hold page state
-const currentProjectID = null; // hold selected project
-const currentTodoID = null; // hold selected todo
+
+// let pageRender = null; // will initialise Page class instance ## disabled for TESTING
 
 const init = () => {
 
+
     // 1. Check if local storage exists
     if (isStorageAvailable()) {
-        // Parse the localStorage data and set in the current session appData
+        // Parse the localStorage data and set in the current session sessionData
         const result = JSON.parse(window['localStorage'].getItem('userData'));
-        appData = result;
+        sessionData = result;
 
     } else {
-        // if there is no data in local storage (first time running app), then we initialise appData as fresh
-        appData = {
+        // if there is no data in local storage (first time running app), then we initialise sessionData as fresh
+        sessionData = {
             "settings" : {
                 "last open project": 0
             },
@@ -35,50 +36,28 @@ const init = () => {
     const testbtn = createDebugButton('show data', displayData);
     mainContainer.append(testbtn);
 
+    // separate testing buttons
     const addNewProjectBtn = createDebugButton('Add New Project', () => {
         // TODO generate id
-        const newProject = createNewProject('Generated New Project');
+        const newProject = Project.createNewProject('Generated New Project');
         
         addNewProject(newProject);
     }); // TODO add function that adds new project
 
     const addNewLocalStorageTestData = createDebugButton('Add new local storage test data', () => {
-        // Creates dummy appData and saves to local storage under "userData"
+        // Creates dummy sessionData and saves to local storage under "userData"
         // need to store `window['localStorage']` to a global to access in this code.
-        window['localStorage'].setItem('userData', JSON.stringify(createTestAppData()));
+        window['localStorage'].setItem('userData', JSON.stringify(createTestsessionData()));
     });
 
     mainContainer.append(addNewProjectBtn, addNewLocalStorageTestData);
 
-
-    // Create input form for projects
-
-    const form = document.createElement('form');
-
-    const div = document.createElement('div');
-    const label = document.createElement('label');
-    const input = document.createElement('input');
-
-    label.textContent = 'Project Title';
-
-    const submitBtn = document.createElement('button');
-    submitBtn.textContent = 'Save';
-    submitBtn.setAttribute('type', 'submit');
-
-    submitBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        // TODO run a check to make sure the string is not empty
-        // otherwise create fall back name for the project.
-        // TODO also remember to enable project name editing.
-
-        const newProjectTitle = input.value;
-        const newProject = createNewProject(newProjectTitle);
+    const { form, input } = createForm();
+    bindHandler(form, "submit", input, (event) => {
+        const newProject = Project.createNewProject(input.value);
         addNewProject(newProject);
-    });
+    })
 
-    div.append(label, input, submitBtn);
-    form.append(div);
     mainContainer.append(form);
 
     const projectsListContainer = document.createElement('div');
@@ -86,6 +65,9 @@ const init = () => {
     mainContainer.append(projectsListContainer);
 
     renderProjectList(`#${projectsListElID}`); // this is just here for testing
+
+    // pageRender = new Page(mainContainer);
+    // pageRender.renderPage(pageRender.renderMainPage); // at the moment this just clears the page
 
 
 
@@ -102,9 +84,9 @@ const init = () => {
         
         // userData = setupStorage();
 
-    // If local storage is available && there is no existing appData stored
+    // If local storage is available && there is no existing sessionData stored
     // if (isStorageAvailable()) {
-    // If local storage is available && there is existing appData
+    // If local storage is available && there is existing sessionData
 
     // If local storage is not available
     // } else {
@@ -115,7 +97,7 @@ const init = () => {
     // const userSettings = userData.settings;
     // // get projects data
     // const parsedProjectsData = parseProjectsData(userData);
-    // appData = parsedProjectsData;
+    // sessionData = parsedProjectsData;
 
     // const mainPage = new Page('home', document.querySelector('body'));
 
@@ -128,7 +110,7 @@ const init = () => {
 }
 
 
-const createTestAppData = () => {
+const createTestsessionData = () => {
     return {
         "settings" : {
             "last open project": 0
@@ -155,9 +137,10 @@ const createTestAppData = () => {
     };
 }
 
+
 const addNewProject = (project) => {
-    appData["projects"].push(project);
-    console.log('New project ', project, 'added to appData.'); // for debug purposes
+    sessionData["projects"].push(project);
+    console.log(project, 'added to sessionData and localStorage.'); // for debug purposes
     
     updateLocalStorage();
 
@@ -165,7 +148,7 @@ const addNewProject = (project) => {
 
     // Clear the container
     // then I need to have a reference to the container anyway to populate with new content...
-    // re-render the contents again from the updated appData
+    // re-render the contents again from the updated sessionData
     const newContent = renderProjectList(`#${projectsListElID}`);
     mainContainer.append(newContent);
 }
@@ -176,37 +159,37 @@ const addNewProject = (project) => {
 
 
 const displayData = () => {
-    console.dir(appData);
+    console.dir(sessionData);
 }
 
-const getAppData = () => {
-    return appData['projects'][0]['title'];
+const getsessionData = () => {
+    return sessionData['projects'][0]['title'];
 }
 
-// function that adds a project data object to the overall data
-const createNewProject = (title) => {
-    // New project assumes an empty todos array first
-    const project = new Project(title);
+// // function that adds a project data object to the overall data
+// const createNewProject = (title) => {
+//     // New project assumes an empty todos array first
+//     const project = new Project(title);
 
-    return project;
-}
+//     return project;
+// }
 
 const deleteProject = (projectID) => {
     // Ideally we identify the project to delete with project ID - but that is a TODO
-    const targetIndex = appData['projects'].findIndex(obj => obj.id === projectID);
-    appData['projects'].splice(targetIndex, 1);
+    const targetIndex = sessionData['projects'].findIndex(obj => obj.id === projectID);
+    sessionData['projects'].splice(targetIndex, 1);
     console.log(displayData());
 
     updateLocalStorage();
 
     clearDOM(`#${projectsListElID}`);
-    // re-render the contents again from the updated appData
+    // re-render the contents again from the updated sessionData
     const newContent = renderProjectList(`#${projectsListElID}`);
     mainContainer.append(newContent);
 }
 
 const updateLocalStorage = () => {
-    window['localStorage'].setItem('userData', JSON.stringify(appData));
+    window['localStorage'].setItem('userData', JSON.stringify(sessionData));
 }
 
 const createNewTodo = (title, description, dueDate, priority) => {
@@ -284,8 +267,8 @@ const renderProjectList = (selector) => {
     const projectH1 = document.createElement('h1');
     projectH1.textContent = 'Projects';
     container.append(projectH1);
-    // Loop through appData['projects'] and get all titles
-    appData['projects'].forEach((project) => {
+    // Loop through sessionData['projects'] and get all titles
+    sessionData['projects'].forEach((project) => {
         const projectTitle = document.createElement('h4');
         projectTitle.textContent = project.title;
 
@@ -300,93 +283,13 @@ const renderProjectList = (selector) => {
     
 }
 
-const renderProjectCard = () => {
-
-        const card = document.createElement('li');
-        card.classList.add('project');
-
-        card.setAttribute('data-id', this.id)
-
-        const cardTitle = document.createElement('h1');
-        cardTitle.textContent = this.title;
-        cardTitle.classList.add('project-title');
-
-
-        // Remove later, this is to show data is working
-        const exampleTodo = new Todo(this.todos[0].title, this.todos[0].description, this.todos[0].dueDate, this.todos[0].priority).renderTodo();
-
-        card.append(cardTitle);
-
-        // Remove later, this is to show data is working
-        card.append(exampleTodo);
-
-        return card;
-        
-    }
-
-const renderTodoList = () => {
-        const todoList = document.createElement('ul');
-        // loop through entire todos array
-
-        this.todos.forEach((todo) => {
-            const item = new Todo(todo.title, todo.description, todo.dueDate, todo.priority).renderTodo();
-            todoList.append(item);
-        });
-
-        return todoList
-    }
-
-const renderTodo =  () => {
-    const todoBody = document.createElement('li');
-    todoBody.classList.add('todo');
-
-    const title = this.renderTitle(this.title);
-    const description = this.renderDescription(this.description);
-    const dueDate = this.renderDueDate(this.dueDate);
-    const priority = this.renderPriority(this.priority);
-
-    todoBody.append(title, description, dueDate, priority);
-    return todoBody
-}
-
-const renderTitle =  (text) =>  {
-    const title = document.createElement('h1');
-    title.classList.add('todo-title');
-    title.textContent = text;
-    // add any styling or eventlistener related stuff here?
-    return title;
-}
-
-const renderDescription =  (text) =>  {
-    const description = document.createElement('p');
-    description.classList.add('todo-descr');
-    description.textContent = text;
-    // add any styling or eventlistener related stuff here?
-    return description;
-}
-
-const renderDueDate =  (date) =>  {
-    const dueDate = document.createElement('p');
-    dueDate.classList.add('todo-ddate');
-    dueDate.textContent = date; // This will need to be replaced with date data type
-    return dueDate;
-}
-
-const renderPriority =  (value) =>  {
-    const priority = document.createElement('div');
-    priority.classList.add('todo-priority');
-    // Use some kind of image for the priority?
-    priority.textContent = value;
-    return priority;
-}
-
-
 const clearDOM = (selector) => {
     document.querySelector(selector).innerHTML = '';
 }
 
 
 window.showdata = displayData;
-window.appData = getAppData;
+window.sessionData = getsessionData;
+window.currentContainer = mainContainer;
 
 window.addEventListener('DOMContentLoaded', init);

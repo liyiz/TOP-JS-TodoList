@@ -17,6 +17,14 @@ const storageAvailable = (type) => {
     }
 }
 
+const updateStorage = () => {
+    // update localStorage
+}
+
+const loadStorage = () => {
+    // load data from localStorage
+}
+
 const uuidv4 = (type = null) => {
 
     switch(type){

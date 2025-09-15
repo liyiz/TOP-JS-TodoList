@@ -20,6 +20,11 @@ class Project {
         return uuidv4("project");
     }
 
+    static createNewProject (title) {
+        const project = new Project(title);
+        return project;
+    }
+
 }
 
 export {

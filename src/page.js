@@ -19,7 +19,9 @@ class Page {
 
     renderMainPage() {
         // Render the main menu that lists all the project cards
-        console.log("Hey you ran the render function");
+        console.log("Hey you ran the render function", "Consider how to structure the Page class");
+
+
     }
 
     renderProjectPage() {
