@@ -14,10 +14,29 @@ const projectsListElID = 'projects-list';
 
 // let pageRender = null; // will initialise Page class instance ## disabled for TESTING
 
+
+// User journey - holistic reminder //
+// 1. User should see a list of projects.
+// 2. User should be able to 
+//      a. Select a project, to view its todos
+//      b. Delete a project
+//      c. Add a new project
+// 3. When a project has been selected, the user should be able to
+//      a. View all of its todos
+//      b. Add a todo
+//      c. Edit a todo
+//      d. Delete a todo
+//      e. Organise todos order
+
+// module responsibilities //
+// index.js -> entry point and conductor
+// todo.js -> business logic of todos -> uuid, title, description, due date, completed status, priority
+// project.js -> business logic for what is a collection of todos -> uuid, title, description, completed status
+// dom.js -> render logic, hosts all functions and visual components of how a page should be rendered
+
+
 const init = () => {
 
-
-    // 1. Check if local storage exists
     if (isStorageAvailable()) {
         // Parse the localStorage data and set in the current session sessionData
         const result = JSON.parse(window['localStorage'].getItem('userData'));
@@ -32,6 +51,16 @@ const init = () => {
             "projects": []
         };
     }
+
+    createTestInterface(); // for debug purposes - ⚠ functions are a mix of those here in index.js and other modules
+
+    // pageRender = new Page(mainContainer);
+    // pageRender.renderPage(pageRender.renderMainPage); // at the moment this just clears the page
+
+}
+
+
+const createTestInterface = () => {
 
     const testbtn = createDebugButton('show data', displayData);
     mainContainer.append(testbtn);
@@ -65,48 +94,6 @@ const init = () => {
     mainContainer.append(projectsListContainer);
 
     renderProjectList(`#${projectsListElID}`); // this is just here for testing
-
-    // pageRender = new Page(mainContainer);
-    // pageRender.renderPage(pageRender.renderMainPage); // at the moment this just clears the page
-
-
-
-
-    // Local Storage
-
-        // console.log(storage.length); // this let's us check if the storage has been made use of yet at all
-        // storage.setItem("colorSetting", "#a4509b");
-        // console.dir(storage);
-
-        // const currentColor = localStorage.getItem("colorSetting");
-        // const background = document.querySelector('body');
-        // background.style.setProperty('background-color', currentColor);
-        
-        // userData = setupStorage();
-
-    // If local storage is available && there is no existing sessionData stored
-    // if (isStorageAvailable()) {
-    // If local storage is available && there is existing sessionData
-
-    // If local storage is not available
-    // } else {
-    //     console.error('localStorage is not accessible.');
-    // }
-
-    // // get user settings data
-    // const userSettings = userData.settings;
-    // // get projects data
-    // const parsedProjectsData = parseProjectsData(userData);
-    // sessionData = parsedProjectsData;
-
-    // const mainPage = new Page('home', document.querySelector('body'));
-
-    // const projectPages = [];
-    // const projectList = document.createElement('ul');
-
-
-    // mainContainer.append(projectList);
-
 }
 
 
@@ -154,10 +141,6 @@ const addNewProject = (project) => {
 }
 
 
-
-
-
-
 const displayData = () => {
     console.dir(sessionData);
 }
@@ -199,41 +182,12 @@ const createNewTodo = (title, description, dueDate, priority) => {
     return todo;
 }
 
-const createUserSettings = () => {
-    // Create user settings data object
-    // Will need userSettings.js and UserSettings class
-}
-
-const selectProject = () => {
-
-    console.log("Project selected, now rendering project page with todos...", this.id);
-
-    // some renderPage() function to render out a page...
-
-}
-
-
-const parseProjectsData = (data) => {
-    // Parse stored data into an array to loop through
-
-    // Check if data returned is even necessary to process - feels like it can be accessed directly now due to changed json structure.
-
-    return Object.values(data.projects).map(project => {
-        const todos = Object.values(project.todos);
-        const projectTitle = project.title;
-        const id = project.id;
-        return {id, projectTitle, todos};
-    });
-
-}
 
 
 
-const setupStorage = () => {
-    storage.setItem('userData', JSON.stringify(testjson));
-    const result = JSON.parse(storage.getItem('userData'));
-    return result;
-}
+
+
+
 
 
 const isStorageAvailable = () => {
