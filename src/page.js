@@ -12,21 +12,58 @@ class Page {
 
     // renderPage would require what?
     // it would need to know what page it is rendering: Projects, or Todos
-    renderPage(pageFunction) {
+    renderPage(pageFunction, data) {
         this.clearPage();
-        pageFunction();
+        pageFunction(data);
     }
 
-    renderMainPage() {
+    renderMainPage = (data) => {
+        // data parameter is sessionData from index.js
         // Render the main menu that lists all the project cards
-        console.log("Hey you ran the render function", "Consider how to structure the Page class");
+        console.log("Hey you ran the render function", "Consider how to structure the Page class", this.container);
 
+        
+        const projectList = this.renderProjectList(data);
+        this.container.append(projectList);
 
     }
 
     renderProjectPage() {
         // DOM elements to render the project page
     }
+
+    renderProjectList(data) {
+        const container = document.createElement('div');
+        container.id = 'projects-list';
+        // Create project list child elements
+        const projectH1 = document.createElement('h1');
+        projectH1.textContent = 'Projects';
+        container.append(projectH1);
+        // Loop through sessionData['projects'] and get all titles
+        data['projects'].forEach((project) => {
+            const div = document.createElement('div');
+            const title = document.createElement('h4');
+            title.textContent = project.title;
+
+            const projectID = project.id;
+
+            // const deleteBtn = createDebugButton('delete', (e) => { 
+            //     e.stopPropagation();
+            //     deleteProject(projectID) 
+            // });
+
+            div.addEventListener('click', () => {
+                console.log('div clicked');
+            });
+
+            // div.append(title, deleteBtn);
+            div.append(title);
+            container.append(div);
+        });
+
+        return container;
+        
+    }   
 
     renderProjectCard() {
 

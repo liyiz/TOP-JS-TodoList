@@ -12,7 +12,7 @@ let sessionData; // holds app data
 const mainContainer = document.querySelector('main.container');
 const projectsListElID = 'projects-list';
 
-// let pageRender = null; // will initialise Page class instance ## disabled for TESTING
+let pageRender = null; // will initialise Page class instance ## disabled for TESTING
 
 
 // User journey - holistic reminder //
@@ -52,10 +52,10 @@ const init = () => {
         };
     }
 
-    createTestInterface(); // for debug purposes - ⚠ functions are a mix of those here in index.js and other modules
+    // createTestInterface(); // for debug purposes - ⚠ functions are a mix of those here in index.js and other modules
 
-    // pageRender = new Page(mainContainer);
-    // pageRender.renderPage(pageRender.renderMainPage); // at the moment this just clears the page
+    pageRender = new Page(mainContainer);
+    pageRender.renderPage(pageRender.renderMainPage, sessionData); // look in page.js
 
 }
 
