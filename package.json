@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "TOP project: JavaScript Todo List",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "serve": "npx webpack serve",
     "dist": "npx webpack"
