@@ -1,11 +1,4 @@
-class Todo {
-  /**
-   * @param {string} id
-   * @param {string} title
-   * @param {string} description
-   * @param {string} duDate
-   * @param {string} priority
-   */
+export class Todo {
   // Consider setting defaults for parameters
   constructor(title, description, dueDate, priority) {
     this.title = title;
@@ -14,5 +7,3 @@ class Todo {
     this.priority = priority;
   }
 }
-
-export { Todo };
