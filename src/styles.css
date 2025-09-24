@@ -57,6 +57,10 @@ nav > ul {
   gap: 1em;
 }
 
+#projects-list > li {
+  cursor: pointer;
+}
+
 main {
   border: 1px solid red;
   flex: 8 1 80%;
