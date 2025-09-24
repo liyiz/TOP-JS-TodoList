@@ -3,7 +3,7 @@ import { Todo } from "./todo.js";
 import { Project } from "./project.js";
 
 let sessionData; // holds app data
-
+let user; // holds user data
 // User journey - holistic reminder //
 // 1. User should see a list of projects.
 // 2. User should be able to
@@ -29,11 +29,33 @@ const init = () => {
     if (localStorage) {
         // Get existing data
         console.log(localStorage);
-        const user = JSON.parse(localStorage.getItem('userData'));
+        user = JSON.parse(localStorage.getItem('userData'));
         console.log(user);
     } else {
         // Otherwise run first time set up -> New User class, and a default project with a default todo
     }
+
+    const projectsList = document.getElementById('projects-list');
+    projectsList.innerHTML = '';
+    
+    user.projects.forEach((project) => {
+        const newItem = document.createElement('li');
+
+        const itemSpan = document.createElement('span');
+        itemSpan.textContent = project.title;
+        // maybe consider adding data attributes at this point?
+
+        const btnDiv = document.createElement('div');
+        const btnEdit = document.createElement('button');
+        const btnDelete = document.createElement('button');
+        btnEdit.textContent = 'edit';
+        btnDelete.textContent = 'delete';
+        btnDiv.append(btnEdit, btnDelete);
+
+        newItem.append(itemSpan, btnDiv);
+
+        projectsList.append(newItem);
+    });
 
 };
 
