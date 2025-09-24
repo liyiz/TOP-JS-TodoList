@@ -1,4 +1,4 @@
-export class Todo {
+export default class Todo {
   // Consider setting defaults for parameters
   constructor(title, description, dueDate, priority) {
     this.title = title;
