@@ -3,6 +3,8 @@ import User from './user.js';
 import Todo from "./todo.js";
 import Project from "./project.js";
 
+import testData from './example.json' assert {type: 'json'};
+
 let currentUser = null;
 
 // User journey - holistic reminder //
@@ -26,10 +28,9 @@ let currentUser = null;
 
 const init = () => {
 
-    // Check for localStorage
-    if (localStorage) {
+    // Check if localStorage has relevant data
+    if (localStorage.getItem('userData')) {
         // Get existing data
-        console.log(localStorage);
         const parsedData = JSON.parse(localStorage.getItem('userData'));
         currentUser = new User(parsedData.settings, parsedData.projects);
         
@@ -37,6 +38,8 @@ const init = () => {
 
     } else {
         // Otherwise run first time set up -> New User class, and a default project with a default todo
+        localStorage.setItem('userData', JSON.stringify(testData));
+        currentUser = new User(testData.settings, testData.projects);
     }
 
     // Render first project into project-view
@@ -88,7 +91,6 @@ const init = () => {
 
 function renderProject(projectIndex) {
 
-    const main = document.getElementById('project-view');
     const title = document.getElementById('project-title');
     title.textContent = currentUser.projects[projectIndex].title;
 
@@ -108,7 +110,12 @@ function renderProject(projectIndex) {
         checkbox.checked = todo.completed; // TODO
         const span = document.createElement('span');
         span.textContent = todo.title;
+
+        li.append(checkbox, span);
+
+        todos.append(li);
     });
+
     
 }
 

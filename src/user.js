@@ -1,5 +1,5 @@
 export default class User {
-    constructor(settings, projects, ) {
+    constructor(settings, projects) {
         this.settings = settings;
         this.projects = projects;
     }

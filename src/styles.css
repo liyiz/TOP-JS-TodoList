@@ -77,3 +77,10 @@ main > section > ul {
   flex-direction: column;
   gap: 1em;
 }
+
+
+.project-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
