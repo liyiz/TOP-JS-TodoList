@@ -87,6 +87,17 @@ const init = () => {
         projectsList.append(li);
     });
 
+    // TODO move this somewhere else
+    const modal = document.getElementById('add-project-dialog');
+    const addProjectBtn = document.getElementById('add-project');
+    addProjectBtn.addEventListener('click', () => {
+        modal.showModal();
+    });
+    const cancelBtn = document.getElementById('cancel');
+    cancelBtn.addEventListener('click', () => {
+        modal.close();
+    })
+
 };
 
 function renderProject(projectIndex) {

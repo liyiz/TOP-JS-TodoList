@@ -7,7 +7,7 @@
   </head>
   <body>
     <nav id="sidebar">
-      <div><button>+ Add Project</button></div>
+      <div><button id="add-project">+ Add Project</button></div>
       <h2>Projects</h2>
       <ul id="projects-list">
         <li>
@@ -78,5 +78,40 @@
         </ul>
       </section>
     </main>
+    
+    <dialog class="modal" id="add-project-dialog">
+            <form method="dialog">
+                <div class="header">
+                    <h1>New Book</h1>
+                    <p class="description">Enter new book's details.</p>
+                </div>
+                <div class="form-field">
+                    <label for="title">Book Title</label>
+                    <input id="title" name="title" type="text" placeholder="The Comedy of Errors"/>
+                </div>
+                <div class="form-field">
+                    <label for="author">Author</label>
+                    <input id="author" name="author" type="text" placeholder="William Shakespeare"/>
+                </div>
+                <div class="form-field">
+                    <label for="pages">Number of Pages</label>
+                    <input id="pages" type="text" name="pages" placeholder="232"/>
+                </div>
+                <div class="form-field">
+                    <label for="isRead">Finished Reading</label>
+                    <input id="isRead" type="checkbox" name="isRead" />
+                </div>
+                <div class="buttons">
+                    <button id="getDetails" type="submit">Save</button>
+                    <button id="cancel" type="reset">Cancel</button>
+                </div>
+                <div class="modal-corner">
+                    <button class="close" type="submit" id="close" aria-label="close" formnovalidate>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                    </button>
+                </div>
+            </form>
+    </dialog>
+
   </body>
 </html>

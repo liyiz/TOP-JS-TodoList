@@ -1,5 +1,5 @@
 :root {
-  --color-background: #121212;
+  --color-background: 18, 18, 18; /* #121212 */
   --color-modal: 77 77 77; /* #4d4d4d */
   --color-surface: 18, 18, 18; /* #121212 */
   --color-error: 207, 102, 121; /* #cf6679 */
@@ -26,7 +26,7 @@ html {
 
 html,
 body {
-  background: var(--color-background);
+  background: rgb(var(--color-background));
   color: var(--color-on-background);
   height: 100vh;
   width: 100vw;
@@ -83,4 +83,16 @@ main > section > ul {
   display: flex;
   flex-direction: column;
   gap: 2em;
+}
+
+dialog {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+dialog::backdrop {
+  background-color: rgba(var(--color-background), .25);
 }
