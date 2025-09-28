@@ -45,6 +45,79 @@ const init = () => {
     // Render first project into project-view
     renderProject(0);
 
+    renderProjectsList();
+
+    
+
+    // TODO move this somewhere else
+    const modal = document.getElementById('add-project-dialog');
+    const addProjectBtn = document.getElementById('add-project');
+    addProjectBtn.addEventListener('click', () => {
+        modal.showModal();
+    });
+    const cancelBtn = document.getElementById('cancel');
+    cancelBtn.addEventListener('click', () => {
+        modal.close();
+    })
+
+    // TODO move this elsewhere
+    const projectFormDetails = document.getElementById('add-project-form');
+    projectFormDetails.addEventListener('submit', (event) => {
+        event.preventDefault;
+
+        const projectTitle = document.getElementById('title').value;
+        const projectDescription = document.getElementById('description').value; // TODO add description to project data
+        const newProject = new Project(projectTitle, Project.createInitialTodos());
+        // add new project to user data
+        currentUser.projects.push(newProject);
+        console.log(currentUser.projects);
+
+        // close modal
+        modal.close();
+        // clear form
+        projectFormDetails.reset();
+
+        updateLocalStorage();
+        renderProjectsList();
+    });
+
+};
+
+function updateLocalStorage() {
+    localStorage.setItem('userData', JSON.stringify(currentUser));
+}
+
+function renderProject(projectIndex) {
+
+    const title = document.getElementById('project-title');
+    title.textContent = currentUser.projects[projectIndex].title;
+
+    const todos = document.getElementById('todos-list');
+    todos.innerHTML = '';
+
+    if (currentUser.projects[projectIndex].todos.length <= 0) {
+        return console.error('This project has an empty todos array!');
+    }
+
+    currentUser.projects[projectIndex].todos.forEach((todo) => {
+        const li = document.createElement('li');
+        const checkbox = document.createElement('input');
+        checkbox.id = ''; // TODO
+        checkbox.type = 'checkbox';
+        checkbox.name = ''; // TODO
+        checkbox.checked = todo.completed; // TODO
+        const span = document.createElement('span');
+        span.textContent = todo.title;
+
+        li.append(checkbox, span);
+
+        todos.append(li);
+    });
+
+    
+};
+
+function renderProjectsList() {
     const projectsList = document.getElementById('projects-list');
     projectsList.innerHTML = '';
     
@@ -86,72 +159,6 @@ const init = () => {
 
         projectsList.append(li);
     });
-
-    // TODO move this somewhere else
-    const modal = document.getElementById('add-project-dialog');
-    const addProjectBtn = document.getElementById('add-project');
-    addProjectBtn.addEventListener('click', () => {
-        modal.showModal();
-    });
-    const cancelBtn = document.getElementById('cancel');
-    cancelBtn.addEventListener('click', () => {
-        modal.close();
-    })
-
-    // TODO move this elsewhere
-    const projectFormDetails = document.getElementById('add-project-form');
-    projectFormDetails.addEventListener('submit', (event) => {
-        event.preventDefault;
-
-        const projectTitle = document.getElementById('title').value;
-        const projectDescription = document.getElementById('description').value; // TODO add description to project data
-        const newProject = new Project(projectTitle, Project.createInitialTodos());
-        // add new project to user data
-        currentUser.projects.push(newProject);
-        console.log(currentUser.projects);
-
-        // close modal
-        modal.close();
-        // clear form
-        projectFormDetails.reset();
-
-        updateLocalStorage();
-    });
-
-};
-
-function updateLocalStorage() {
-    localStorage.setItem('userData', JSON.stringify(currentUser));
 }
-
-function renderProject(projectIndex) {
-
-    const title = document.getElementById('project-title');
-    title.textContent = currentUser.projects[projectIndex].title;
-
-    const todos = document.getElementById('todos-list');
-    todos.innerHTML = '';
-
-    if (currentUser.projects[projectIndex].todos.length <= 0) {
-        return console.error('This project has an empty todos array!');
-    }
-
-    currentUser.projects[projectIndex].todos.forEach((todo) => {
-        const li = document.createElement('li');
-        const checkbox = document.createElement('input');
-        checkbox.id = ''; // TODO
-        checkbox.type = 'checkbox';
-        checkbox.name = ''; // TODO
-        checkbox.checked = todo.completed; // TODO
-        const span = document.createElement('span');
-        span.textContent = todo.title;
-
-        li.append(checkbox, span);
-
-        todos.append(li);
-    });
-
-    
-};
 
 window.addEventListener("DOMContentLoaded", init);
