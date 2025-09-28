@@ -32,7 +32,13 @@ const init = () => {
     if (localStorage.getItem('userData')) {
         // Get existing data
         const parsedData = JSON.parse(localStorage.getItem('userData'));
+
+        // rehydrate User and Project data - to access class methods after deserialization
         currentUser = new User(parsedData.settings, parsedData.projects);
+        const rehydratedProjects = currentUser.projects.map(project => {
+            return project = new Project(project.title+' rehydrated', project.todos);
+        });
+        currentUser.projects = rehydratedProjects;
         
         console.log(currentUser);
 
@@ -47,7 +53,8 @@ const init = () => {
 
     renderProjectsList();
 
-    
+
+
 
     // TODO move this somewhere else
     const modal = document.getElementById('add-project-dialog');
@@ -144,6 +151,8 @@ function renderProjectsList() {
             event.stopPropagation();
             console.log(`Edit project index ${index}`);
             // project.edit(index);
+            const targetProject = currentUser.projects[index].getTodos();
+            console.log(targetProject);
         });
         btnDelete.addEventListener('click', (event) => {
             event.stopPropagation();
