@@ -96,3 +96,23 @@ dialog {
 dialog::backdrop {
   background-color: rgba(var(--color-background), .25);
 }
+
+.modal .modal-corner {
+    width: 2rem;
+    height: 2rem;
+
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+}
+
+.modal .modal-corner .close {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    padding: 0.125rem;
+}
+
+.modal .modal-corner .close svg {
+    fill: var(--color-on-primary);
+}
