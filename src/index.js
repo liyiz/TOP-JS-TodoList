@@ -98,7 +98,31 @@ const init = () => {
         modal.close();
     })
 
+    // TODO move this elsewhere
+    const projectFormDetails = document.getElementById('add-project-form');
+    projectFormDetails.addEventListener('submit', (event) => {
+        event.preventDefault;
+
+        const projectTitle = document.getElementById('title').value;
+        const projectDescription = document.getElementById('description').value; // TODO add description to project data
+        const newProject = new Project(projectTitle, Project.createInitialTodos());
+        // add new project to user data
+        currentUser.projects.push(newProject);
+        console.log(currentUser.projects);
+
+        // close modal
+        modal.close();
+        // clear form
+        projectFormDetails.reset();
+
+        updateLocalStorage();
+    });
+
 };
+
+function updateLocalStorage() {
+    localStorage.setItem('userData', JSON.stringify(currentUser));
+}
 
 function renderProject(projectIndex) {
 
@@ -128,6 +152,6 @@ function renderProject(projectIndex) {
     });
 
     
-}
+};
 
 window.addEventListener("DOMContentLoaded", init);

@@ -4,6 +4,9 @@ export default class Project {
     this.todos = todos;
   }
 
+  static createInitialTodos() {
+    return this.todos = []
+  }
 
 
   getTodos() {
