@@ -36,7 +36,7 @@ const init = () => {
         // rehydrate User and Project data - to access class methods after deserialization
         currentUser = new User(parsedData.settings, parsedData.projects);
         const rehydratedProjects = currentUser.projects.map(project => {
-            return project = new Project(project.title+' rehydrated', project.todos);
+            return project = new Project(project.title, project.todos);
         });
         currentUser.projects = rehydratedProjects;
         
@@ -152,12 +152,15 @@ function renderProjectsList() {
             console.log(`Edit project index ${index}`);
             // project.edit(index);
             const targetProject = currentUser.projects[index].getTodos();
+            // TODO trigger event to edit the project - open the modal and populate it etc.
             console.log(targetProject);
         });
         btnDelete.addEventListener('click', (event) => {
             event.stopPropagation();
             console.log(`Delete project index ${index}`);
-            // project.delete(index);
+            currentUser.deleteProject(index);
+            updateLocalStorage();
+            renderProjectsList();
         });
 
         btnEdit.textContent = 'edit';

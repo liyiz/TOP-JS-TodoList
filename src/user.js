@@ -11,4 +11,9 @@ export default class User {
     setInitialSettings () {
         this.settings = {};
     }
+
+    deleteProject (index) {
+        this.projects.splice(index, 1);
+        return console.log(`Project index ${index} deleted.`);
+    }
 }

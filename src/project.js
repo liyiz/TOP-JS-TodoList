@@ -13,5 +13,4 @@ export default class Project {
     return this.todos;
   }
 
-
 }
