@@ -82,28 +82,58 @@
     <dialog class="modal" id="add-project-dialog">
             <form method="dialog" id="add-project-form">
                 <div class="header">
-                    <h1>New Project</h1>
-                    <p class="description">Enter your project's details.</p>
+                  <h1>New Project</h1>
+                  <p class="description">Enter your project's details.</p>
                 </div>
                 <div class="form-field">
-                    <label for="title">Project Title</label>
-                    <input id="title" name="title" type="text" placeholder="My Next Project"/>
+                  <label>Project Title
+                    <input name="title" type="text" placeholder="My Next Project"/>
+                  </label>
                 </div>
-                <div class="form-field">
-                    <label for="description">Description</label>
-                    <input id="description" name="description" type="text" placeholder="All the todos for my project"/>
-                </div>
-                <div class="buttons">
-                    <button id="getDetails" type="submit">Save</button>
-                    <button id="cancel" type="reset">Cancel</button>
+                <!-- <div class="form-field">
+                  <label>Description
+                    <input name="description" type="text" placeholder="All the todos for my project"/>
+                  </label>
+                </div> -->
+                <div class="modal-buttons">
+                    <button id="save-project-add" type="submit">Save</button>
+                    <button class="cancel" type="reset">Cancel</button>
                 </div>
                 <div class="modal-corner">
-                    <button class="close" type="submit" id="close" aria-label="close" formnovalidate>
+                    <button class="close" type="submit" aria-label="close" formnovalidate>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
                     </button>
                 </div>
             </form>
     </dialog>
+
+    <dialog class="modal" id="edit-project-dialog">
+            <form method="dialog" id="edit-project-form">
+                <div class="header">
+                    <h1>Edit Project</h1>
+                    <p class="description">Edit your project's details.</p>
+                </div>
+               <div class="form-field">
+                  <label>Project Title
+                    <input name="title" type="text"/>
+                  </label>
+                </div>
+                <!-- <div class="form-field">
+                  <label>Description
+                    <input name="description" type="text"/>
+                  </label>
+                </div> -->
+                <div class="modal-buttons">
+                    <button id="save-project-edit" type="submit">Save</button>
+                    <button class="cancel" type="reset">Cancel</button>
+                </div>
+                <div class="modal-corner">
+                    <button class="close" type="submit" aria-label="close" formnovalidate>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                    </button>
+                </div>
+            </form>
+    </dialog>  
 
   </body>
 </html>

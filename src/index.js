@@ -26,6 +26,13 @@ let currentUser = null;
 // project.js -> business logic for what is a collection of todos -> title, description
 // todo.js -> business logic of todos -> uuid, title, description, due date, completed status, priority
 
+
+// DOM elements Global
+const modal_addProject = document.getElementById('add-project-dialog');
+const modal_editProject = document.getElementById('edit-project-dialog');
+
+
+
 const init = () => {
 
     // Check if localStorage has relevant data
@@ -53,40 +60,77 @@ const init = () => {
 
     renderProjectsList();
 
-
-
-
     // TODO move this somewhere else
-    const modal = document.getElementById('add-project-dialog');
     const addProjectBtn = document.getElementById('add-project');
     addProjectBtn.addEventListener('click', () => {
-        modal.showModal();
+        modal_addProject.showModal();
     });
-    const cancelBtn = document.getElementById('cancel');
-    cancelBtn.addEventListener('click', () => {
-        modal.close();
-    })
+
+    const modals = document.querySelectorAll('dialog');
+    console.log(modals)
+    const modal_closeBtns = document.querySelectorAll('.modal .modal-corner .close');
+    console.log('close buttons: ', modal_closeBtns);
+    const modal_cancelBtns = document.querySelectorAll('.modal .modal-buttons .cancel');
+    console.log('cancel buttons: ', modal_cancelBtns);
+
+    modal_closeBtns.forEach( btn => {
+        btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            modals.forEach(modal => modal.close()); // will close all modals - bit excessive but works.
+        });
+    });
+
+    modal_cancelBtns.forEach( btn => {
+        btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            modals.forEach(modal => {
+                modal.close(); // will close all modals - bit excessive but works.
+                modal.querySelector('form').reset(); // resets all forms
+            }); 
+        });
+    });    
 
     // TODO move this elsewhere
-    const projectFormDetails = document.getElementById('add-project-form');
-    projectFormDetails.addEventListener('submit', (event) => {
+    const projectAddFormDetails = document.getElementById('add-project-form');
+    projectAddFormDetails.addEventListener('submit', (event) => {
         event.preventDefault;
 
-        const projectTitle = document.getElementById('title').value;
-        const projectDescription = document.getElementById('description').value; // TODO add description to project data
-        const newProject = new Project(projectTitle, Project.createInitialTodos());
+        const titleInput = projectAddFormDetails.querySelector('[name="title"]').value;
+        // const descriptionInput = projectAddFormDetails.querySelector('[name="description"]').value; // TODO add description to project data
+        const newProject = new Project(titleInput, Project.createInitialTodos());
         // add new project to user data
         currentUser.projects.push(newProject);
         console.log(currentUser.projects);
 
         // close modal
-        modal.close();
+        modal_addProject.close();
         // clear form
-        projectFormDetails.reset();
+        projectAddFormDetails.reset();
 
         updateLocalStorage();
         renderProjectsList();
     });
+
+    const projectEditFormDetails = document.getElementById('edit-project-form');
+    projectEditFormDetails.addEventListener('submit', (event) => {
+        event.preventDefault;
+
+        const titleInput = projectEditFormDetails.querySelector('[name="title"]').value;
+        // const descriptionInput = projectEditFormDetails.querySelector('[name="description"]').value; // TODO add description to project data
+       
+        // Index is referenced from project-index attribute that is defined in btnEdit's event listener inside renderProjectsList()
+        const index = modal_editProject.querySelector('form').getAttribute('project-index');
+        currentUser.projects[index].setTitle(titleInput); // TODO - change this to a setter function in User class
+
+        // close modal
+        modal_editProject.close();
+        // clear form
+        projectEditFormDetails.reset();
+
+        updateLocalStorage();
+        renderProjectsList();
+    });
+    
 
 };
 
@@ -150,10 +194,16 @@ function renderProjectsList() {
         btnEdit.addEventListener('click', (event) => {
             event.stopPropagation();
             console.log(`Edit project index ${index}`);
-            // project.edit(index);
             const targetProject = currentUser.projects[index].getTodos();
-            // TODO trigger event to edit the project - open the modal and populate it etc.
-            console.log(targetProject);
+
+            modal_editProject.showModal();
+            // target the title input
+            const form = modal_editProject.querySelector('form');
+            // populate title input with current project title
+            form.querySelector('[name="title"]').value = currentUser.projects[index].getTitle()
+            form.setAttribute('project-index', index);
+            // TODO Can I pass the index from this scope over to the Save button in the modal?
+            console.log(form);
         });
         btnDelete.addEventListener('click', (event) => {
             event.stopPropagation();
@@ -172,5 +222,6 @@ function renderProjectsList() {
         projectsList.append(li);
     });
 }
+
 
 window.addEventListener("DOMContentLoaded", init);
