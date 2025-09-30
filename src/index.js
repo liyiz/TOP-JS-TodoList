@@ -49,23 +49,24 @@ const init = () => {
         
         console.log(currentUser);
 
-    } else {
+    } else { // # FIRST TIME RUN CREATE NEW DATA
         // Otherwise run first time set up -> New User class, and a default project with a default todo
         localStorage.setItem('userData', JSON.stringify(testData));
         currentUser = new User(testData.settings, testData.projects);
     }
 
-    // Render first project into project-view
-    renderProject(0);
 
+    // # RENDER RELATED FUNCTIONS
+    renderProject(0); // Render first project into project-view
     renderProjectsList();
 
-    // TODO move this somewhere else
+    // # ADD PROJECT BUTTON 
     const addProjectBtn = document.getElementById('add-project');
     addProjectBtn.addEventListener('click', () => {
         modal_addProject.showModal();
     });
 
+    // # MODAL BUTTONS
     const modals = document.querySelectorAll('dialog');
     console.log(modals)
     const modal_closeBtns = document.querySelectorAll('.modal .modal-corner .close');
@@ -91,6 +92,7 @@ const init = () => {
     });    
 
     // TODO move this elsewhere
+    // # ADD PROJECT FORM
     const projectAddFormDetails = document.getElementById('add-project-form');
     projectAddFormDetails.addEventListener('submit', (event) => {
         event.preventDefault;
@@ -111,6 +113,7 @@ const init = () => {
         renderProjectsList();
     });
 
+    // # EDIT PROJECT FORM
     const projectEditFormDetails = document.getElementById('edit-project-form');
     projectEditFormDetails.addEventListener('submit', (event) => {
         event.preventDefault;
@@ -138,6 +141,7 @@ function updateLocalStorage() {
     localStorage.setItem('userData', JSON.stringify(currentUser));
 }
 
+// # RENDER <main id="project-view">
 function renderProject(projectIndex) {
 
     const title = document.getElementById('project-title');
@@ -168,6 +172,7 @@ function renderProject(projectIndex) {
     
 };
 
+// # RENDER <nav id="sidebar">
 function renderProjectsList() {
     const projectsList = document.getElementById('projects-list');
     projectsList.innerHTML = '';
