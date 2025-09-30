@@ -8,6 +8,9 @@ export default class Project {
     return this.todos = []
   }
 
+  addNewTodo(newTodo) {
+    this.todos.push(newTodo);
+  }
   setTitle(newTitle) {
     this.title = newTitle;
   }

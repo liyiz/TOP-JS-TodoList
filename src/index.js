@@ -30,6 +30,7 @@ let currentUser = null;
 // DOM elements Global
 const modal_addProject = document.getElementById('add-project-dialog');
 const modal_editProject = document.getElementById('edit-project-dialog');
+const modal_addTodo = document.getElementById('add-task-dialog');
 
 
 
@@ -60,13 +61,21 @@ const init = () => {
     renderProject(0); // Render first project into project-view
     renderProjectsList();
 
-    // # ADD PROJECT BUTTON 
+    // # BUSINESS - ADD PROJECT BUTTON 
     const addProjectBtn = document.getElementById('add-project');
     addProjectBtn.addEventListener('click', () => {
         modal_addProject.showModal();
     });
 
-    // # MODAL BUTTONS
+    // # BUSINESS - ADD TODO/TASK BUTTON
+    const addTodoBtn = document.getElementById('add-task');
+    addTodoBtn.addEventListener('click', () => {
+        modal_addTodo.showModal(); // TODO add modal to template.html
+        const currentProjectIndex = document.getElementById('project-view').getAttribute('project-index'); // project-index is set by the <li> that have event listeners set in renderProjectsList()
+        // 'Submit' in #add-task-dialog will need to reference currentProjectIndex to get correct project index
+    });
+
+    // # BUSINESS - MODAL BUTTONS
     const modals = document.querySelectorAll('dialog');
     console.log(modals)
     const modal_closeBtns = document.querySelectorAll('.modal .modal-corner .close');
@@ -77,7 +86,12 @@ const init = () => {
     modal_closeBtns.forEach( btn => {
         btn.addEventListener('click', (event) => {
             event.preventDefault();
-            modals.forEach(modal => modal.close()); // will close all modals - bit excessive but works.
+            modals.forEach(modal => {
+                modal.close();
+                if (modal.querySelector('form').getAttribute('project-index')) {
+                    modal.querySelector('form').removeAttribute('project-index');
+                } // removes 'project-index' attribute from modal <form>
+            }); // will close all modals - bit excessive but works.
         });
     });
 
@@ -87,12 +101,15 @@ const init = () => {
             modals.forEach(modal => {
                 modal.close(); // will close all modals - bit excessive but works.
                 modal.querySelector('form').reset(); // resets all forms
+                if (modal.querySelector('form').getAttribute('project-index')) {
+                    modal.querySelector('form').removeAttribute('project-index');
+                } // removes 'project-index' attribute from modal <form>
             }); 
         });
     });    
 
     // TODO move this elsewhere
-    // # ADD PROJECT FORM
+    // # BUSINESS - ADD PROJECT FORM
     const projectAddFormDetails = document.getElementById('add-project-form');
     projectAddFormDetails.addEventListener('submit', (event) => {
         event.preventDefault;
@@ -101,7 +118,7 @@ const init = () => {
         // const descriptionInput = projectAddFormDetails.querySelector('[name="description"]').value; // TODO add description to project data
         const newProject = new Project(titleInput, Project.createInitialTodos());
         // add new project to user data
-        currentUser.projects.push(newProject);
+        currentUser.projects.push(newProject); // TODO move this functionality to User class to call User.addProjecT(newProject)
         console.log(currentUser.projects);
 
         // close modal
@@ -113,7 +130,7 @@ const init = () => {
         renderProjectsList();
     });
 
-    // # EDIT PROJECT FORM
+    // # BUSINESS - EDIT PROJECT FORM
     const projectEditFormDetails = document.getElementById('edit-project-form');
     projectEditFormDetails.addEventListener('submit', (event) => {
         event.preventDefault;
@@ -134,6 +151,28 @@ const init = () => {
         renderProjectsList();
     });
     
+    // # BUSINESS - ADD TODO FORM
+    const todoAddFormDetails = document.getElementById('add-task-form');
+    todoAddFormDetails.addEventListener('submit', (event) => {
+        event.preventDefault;
+
+        const titleInput = todoAddFormDetails.querySelector('[name="title"]').value;
+        const descriptionInput = todoAddFormDetails.querySelector('[name="description"]').value;
+        const newTodo = new Todo(titleInput, descriptionInput);
+
+        const currentProjectIndex = document.getElementById('project-view').getAttribute('project-index'); // project-index is set by the <li> that have event listeners set in renderProjectsList()
+        
+        currentUser.projects[currentProjectIndex].todos.push(newTodo);
+        console.log(currentUser.projects[currentProjectIndex].todos);
+
+        // close modal
+        modal_addProject.close();
+        // clear form
+        todoAddFormDetails.reset();
+
+        updateLocalStorage();
+        renderProject(currentProjectIndex);
+    });
 
 };
 
@@ -143,6 +182,9 @@ function updateLocalStorage() {
 
 // # RENDER <main id="project-view">
 function renderProject(projectIndex) {
+
+    const projectView = document.getElementById('project-view');
+    projectView.setAttribute('project-index', projectIndex);
 
     const title = document.getElementById('project-title');
     title.textContent = currentUser.projects[projectIndex].title;
@@ -177,9 +219,10 @@ function renderProjectsList() {
     const projectsList = document.getElementById('projects-list');
     projectsList.innerHTML = '';
     
-    currentUser.projects.forEach((project, index) => {
+    currentUser.projects.forEach((project, index) => { // origin of project-index number - a bit precarious because it relies on the array order of User.projects when it goes through serialization and deserialization.
         const li = document.createElement('li');
-        li.setAttribute('index', index);
+
+        li.setAttribute('project-index', index);
 
         li.addEventListener('click', function () {
             // currentProjectIndex = index;
