@@ -84,9 +84,14 @@ const init = () => {
     modals.forEach( modal => { 
         modal.addEventListener('cancel', (event) => { // handles pressing the esc key when dialog open
             // UX consideration, close button does not reset the form?
-            // const form = modal.querySelector('form');
-            // form ? form.reset() : undefined; // resets form
+            const form = modal.querySelector('form');
+            form ? form.reset() : undefined; // resets form
         });
+        modal.addEventListener("click", function (event) { // close dialog on clicking backdrop
+            if (event.target === modal) {
+                modal.close();
+            }
+        }); 
     });
 
     modal_closeBtns.forEach( btn => {
