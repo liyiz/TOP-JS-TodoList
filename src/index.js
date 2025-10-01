@@ -31,6 +31,7 @@ let currentUser = null;
 const modal_addProject = document.getElementById('add-project-dialog');
 const modal_editProject = document.getElementById('edit-project-dialog');
 const modal_addTodo = document.getElementById('add-task-dialog');
+const modal_showTodo = document.getElementById('show-task-dialog');
 
 
 
@@ -77,34 +78,37 @@ const init = () => {
 
     // # BUSINESS - MODAL BUTTONS
     const modals = document.querySelectorAll('dialog');
-    console.log(modals)
     const modal_closeBtns = document.querySelectorAll('.modal .modal-corner .close');
-    console.log('close buttons: ', modal_closeBtns);
     const modal_cancelBtns = document.querySelectorAll('.modal .modal-buttons .cancel');
-    console.log('cancel buttons: ', modal_cancelBtns);
+
+    modals.forEach( modal => { 
+        modal.addEventListener('cancel', (event) => { // handles pressing the esc key when dialog open
+            // UX consideration, close button does not reset the form?
+            // const form = modal.querySelector('form');
+            // form ? form.reset() : undefined; // resets form
+        });
+    });
 
     modal_closeBtns.forEach( btn => {
         btn.addEventListener('click', (event) => {
             event.preventDefault();
-            modals.forEach(modal => {
-                modal.close();
-                if (modal.querySelector('form').getAttribute('project-index')) {
-                    modal.querySelector('form').removeAttribute('project-index');
-                } // removes 'project-index' attribute from modal <form>
-            }); // will close all modals - bit excessive but works.
+            // button needs to reference its relevant modal
+            const modalRelative = event.target.closest('dialog');
+            modalRelative.close(); 
+            // UX consideration, close button does not reset the form?
+            // const form = modalRelative.querySelector('form');
+            // form ? form.reset() : undefined; // resets form
         });
     });
 
     modal_cancelBtns.forEach( btn => {
         btn.addEventListener('click', (event) => {
             event.preventDefault();
-            modals.forEach(modal => {
-                modal.close(); // will close all modals - bit excessive but works.
-                modal.querySelector('form').reset(); // resets all forms
-                if (modal.querySelector('form').getAttribute('project-index')) {
-                    modal.querySelector('form').removeAttribute('project-index');
-                } // removes 'project-index' attribute from modal <form>
-            }); 
+            // button needs to reference its relevant modal
+            const modalRelative = event.target.closest('dialog');
+            modalRelative.close(); 
+            const form = modalRelative.querySelector('form');
+            form ? form.reset() : undefined; // resets form
         });
     });    
 
@@ -196,7 +200,7 @@ function renderProject(projectIndex) {
         return console.error('This project has an empty todos array!');
     }
 
-    currentUser.projects[projectIndex].todos.forEach((todo) => {
+    currentUser.projects[projectIndex].todos.forEach((todo, index) => {
         const li = document.createElement('li');
         const checkbox = document.createElement('input');
         checkbox.id = ''; // TODO
@@ -206,13 +210,30 @@ function renderProject(projectIndex) {
         const span = document.createElement('span');
         span.textContent = todo.title;
 
+        li.addEventListener('click', () => { // Using todo array index to target the clicked todo
+            console.log("Clicked on todo index:", index)
+            // show todo modal/dialog
+            modal_showTodo.showModal();
+            // populate the modal with relevant data
+            renderTodo(projectIndex, index);
+        });
+
         li.append(checkbox, span);
 
         todos.append(li);
     });
-
     
 };
+
+// # RENDER Todo/Task modal with relevant data
+
+function renderTodo(projectIndex, todoIndex) {
+    const title = document.getElementById('task-title');
+    const description = document.getElementById('task-description');
+
+    title.textContent = currentUser.projects[projectIndex].todos[todoIndex].title;
+    description.textContent = currentUser.projects[projectIndex].todos[todoIndex].description;
+}
 
 // # RENDER <nav id="sidebar">
 function renderProjectsList() {
