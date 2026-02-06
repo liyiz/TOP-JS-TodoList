@@ -4,7 +4,7 @@
   "description": "TOP project: JavaScript Todo List",
   "main": "index.js",
   "scripts": {
-    "serve": "npx webpack serve",
+    "dev": "npx webpack serve",
     "dist": "npx webpack"
   },
   "repository": {

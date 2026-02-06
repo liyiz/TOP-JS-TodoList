@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <nav id="sidebar">
+      <div><button id="add-project">+ Add Project</button></div>
+      <h2>Projects</h2>
+      <ul id="projects-list">
+        <li>
+          <span>Project Title xxx</span>
+          <div>
+            <button>edit</button>
+            <button>delete</button>
+          </div>
+        </li>
+        <li>
+          <span>Project Title xxx</span>
+          <div>
+            <button>edit</button>
+            <button>delete</button>
+          </div>
+        </li>
+        <li>
+          <span>Project Title xxx</span>
+          <div>
+            <button>edit</button>
+            <button>delete</button>
+          </div>
+        </li>
+        <li>
+          <span>Project Title xxx</span>
+          <div>
+            <button>edit</button>
+            <button>delete</button>
+          </div>
+        </li>
+        <li>
+          <span>Project Title xxx</span>
+          <div>
+            <button>edit</button>
+            <button>delete</button>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <main id="project-view">
+      <section class="project-container">
+        <div class="project-header">
+          <h1 id="project-title">Project Title xxx</h1>
+          <button id="add-task" type="submit">+ Add Task</button>
+        </div>
+        <ul id="todos-list">
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+          <li>
+            <input type="checkbox" name="" id=""><span>Todo task xxx</span>
+          </li>
+        </ul>
+      </section>
+    </main>
+    
+    <dialog class="modal" id="add-project-dialog">
+            <form method="dialog" id="add-project-form">
+                <div class="header">
+                  <h1>New Project</h1>
+                  <p class="description">Enter your project's details.</p>
+                </div>
+                <div class="form-field">
+                  <label>Project Title
+                    <input name="title" type="text" placeholder=""/>
+                  </label>
+                </div>
+                <!-- <div class="form-field">
+                  <label>Description
+                    <input name="description" type="text" placeholder="All the todos for my project"/>
+                  </label>
+                </div> -->
+                <div class="modal-buttons">
+                    <button id="save-project-add" type="submit">Save</button>
+                    <button class="cancel" type="reset">Cancel</button>
+                </div>
+                <div class="modal-corner">
+                    <button class="close" type="submit" aria-label="close" formnovalidate>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                    </button>
+                </div>
+            </form>
+    </dialog>
+
+    <dialog class="modal" id="add-task-dialog">
+            <form method="dialog" id="add-task-form">
+                <div class="header">
+                  <h1>New Task</h1>
+                  <p class="description">Enter task details.</p>
+                </div>
+                <div class="form-field">
+                  <label>Task Title
+                    <input name="title" type="text" placeholder=""/>
+                  </label>
+                </div>
+                <div class="form-field">
+                  <label>Description
+                    <input name="description" type="text" placeholder=""/>
+                  </label>
+                </div>
+                <!-- TODO <div class="form-field">
+                  <label>Due Date
+                    <input name="due_date" type="text" placeholder=""/>
+                  </label>
+                </div> -->
+                <!-- TODO <div class="form-field">
+                  <label>Priority
+                    <input name="priority" type="text" placeholder=""/>
+                  </label>
+                </div> -->
+                <!-- TODO <div class="form-field">
+                  <label>Notes
+                    <input name="notes" type="text" placeholder=""/>
+                  </label>
+                </div> -->
+                <!-- TODO <div class="form-field">
+                  <label>Checklist
+                    <input name="checklist" type="text" placeholder=""/>
+                  </label>
+                </div> -->
+                <div class="modal-buttons">
+                    <button id="save-task-add" type="submit">Save</button>
+                    <button class="cancel" type="reset">Cancel</button>
+                </div>
+                <div class="modal-corner">
+                    <button class="close" type="submit" aria-label="close" formnovalidate>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                    </button>
+                </div>
+            </form>
+    </dialog>
+
+    <dialog class="modal" id="show-task-dialog">
+            <div id="task-body">
+              <h1 id="task-title">Task Title</h1>
+              <p id="task-description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              </p>
+              <!-- TODO: add due date, priority, notes, checklist -->
+              <div class="modal-corner">
+                  <button class="close" type="submit" aria-label="close" formnovalidate>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                  </button>
+              </div>
+            </div>
+    </dialog>
+
+    <dialog class="modal" id="edit-project-dialog">
+            <form method="dialog" id="edit-project-form">
+                <div class="header">
+                    <h1>Edit Project</h1>
+                    <p class="description">Edit your project's details.</p>
+                </div>
+               <div class="form-field">
+                  <label>Project Title
+                    <input name="title" type="text"/>
+                  </label>
+                </div>
+                <!-- <div class="form-field">
+                  <label>Description
+                    <input name="description" type="text"/>
+                  </label>
+                </div> -->
+                <div class="modal-buttons">
+                    <button id="save-project-edit" type="submit">Save</button>
+                    <button class="cancel" type="reset">Cancel</button>
+                </div>
+                <div class="modal-corner">
+                    <button class="close" type="submit" aria-label="close" formnovalidate>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                    </button>
+                </div>
+            </form>
+    </dialog>  
+
+  </body>
+</html>
