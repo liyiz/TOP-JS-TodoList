@@ -67,16 +67,33 @@ export class View
 
     // const newLi = this.createListItem();
 
-
     return ul;
   }
 
   createListItem(data) {
     // data parameter expects just the todo data object
     // { id, title, description ... }
-    const li = document.createElement('li');
-    li.innerText = data.title
 
+    const itemId = `todo-${crypto.randomUUID()}`; // May need to move this elsewhere to set the id and then to provide in this function as an argument.
+
+    const li = document.createElement('li');
+
+    const label = document.createElement('label')
+    label.innerText = data.title;
+    label.setAttribute('for', itemId)
+
+    // add checkbox input and event listener so checking this switches the todo's done status 
+    const checkbox = document.createElement('input');
+    checkbox.setAttribute('type', 'checkbox');
+    checkbox.checked && checkbox.removeAttribute('checked'); // redundant
+    checkbox.id = itemId;
+
+    li.append(checkbox, label);
+
+    // add event listener so element is a button to open modal
+    li.addEventListener('click', () => {
+      console.log('You clicked on a todo:', itemId);
+    });
     return li;
   }
 
