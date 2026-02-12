@@ -78,22 +78,28 @@ export class View
 
     const li = document.createElement('li');
 
-    const label = document.createElement('label')
-    label.innerText = data.title;
-    label.setAttribute('for', itemId)
+    const span = document.createElement('span')
+    span.innerText = data.title;
+    // add event listener so element is a button to open modal
+    span.addEventListener('click', () => {
+      console.log('You clicked on a todo:', itemId);
+    });
 
     // add checkbox input and event listener so checking this switches the todo's done status 
     const checkbox = document.createElement('input');
     checkbox.setAttribute('type', 'checkbox');
     checkbox.checked && checkbox.removeAttribute('checked'); // redundant
     checkbox.id = itemId;
+    checkbox.addEventListener('change', () => {
+      checkbox.checked 
+      ? span.style.cssText = 'text-decoration:line-through;'
+      : span.style.cssText = 'text-decoration:none;'
+      // also needs to update the todo status
+      // Maybe this event listener should be applied elsewhere?
+    })
 
-    li.append(checkbox, label);
+    li.append(checkbox, span);
 
-    // add event listener so element is a button to open modal
-    li.addEventListener('click', () => {
-      console.log('You clicked on a todo:', itemId);
-    });
     return li;
   }
 
