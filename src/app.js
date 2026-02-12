@@ -2,6 +2,7 @@ import { View } from './view'
 import exampleJSON from './example.json';
 import loadData from './loadData';
 import saveToLocalStorage from './saveToLocalStorage';
+import { onToggle, onDetails } from './utilities'
 
 export class App
 {
@@ -17,6 +18,6 @@ export class App
     console.log('inspecting data loaded from localStorage', this.userData);
 
     this.view.updateElementText('#project-title', this.userData.projects[0].title);
-    this.view.populateList(this.userData.projects[0].todos);
+    this.view.populateList(this.userData.projects[0].todos, {onToggle, onDetails});
   }
 }

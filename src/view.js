@@ -30,12 +30,12 @@ export class View
     return section;
   }
 
-  populateList(data) {
-    // parameter expects array of todo objects
+  populateList(data, callbacks) {
+    // parameter expects array of todo objects and object of callbacks
 
     // Create each todo's html element
     const todoListElems = data.map(item => {
-      const todo = this.createListItem(item);
+      const todo = this.createListItem(item, callbacks);
       return todo;
     });
     // Add each html element to the todo list holder
@@ -70,32 +70,29 @@ export class View
     return ul;
   }
 
-  createListItem(data) {
+  createListItem(data, { onToggle, onDetails }) {
     // data parameter expects just the todo data object
     // { id, title, description ... }
-
-    const itemId = `todo-${crypto.randomUUID()}`; // May need to move this elsewhere to set the id and then to provide in this function as an argument.
 
     const li = document.createElement('li');
 
     const span = document.createElement('span')
-    span.innerText = data.title;
-    // add event listener so element is a button to open modal
-    span.addEventListener('click', () => {
-      console.log('You clicked on a todo:', itemId);
-    });
+    span.textContent = data.title;
+    // Apply initial state based on data
+    if (data.completed) span.style.textDecoration = 'line-through';
+    // Open todo details handler
+    span.addEventListener('click', () => onDetails(data.id));
 
     // add checkbox input and event listener so checking this switches the todo's done status 
     const checkbox = document.createElement('input');
     checkbox.setAttribute('type', 'checkbox');
     checkbox.checked && checkbox.removeAttribute('checked'); // redundant
-    checkbox.id = itemId;
+    checkbox.id = data.id;
     checkbox.addEventListener('change', () => {
-      checkbox.checked 
-      ? span.style.cssText = 'text-decoration:line-through;'
-      : span.style.cssText = 'text-decoration:none;'
-      // also needs to update the todo status
-      // Maybe this event listener should be applied elsewhere?
+      // We don't change the UI here manually. 
+      // We tell the Controller, which updates the Model, 
+      // which eventually tells the View to re-render.
+      onToggle(data.id);
     })
 
     li.append(checkbox, span);
