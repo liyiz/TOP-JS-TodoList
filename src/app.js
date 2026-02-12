@@ -21,8 +21,11 @@ export class App
   init() {
     console.log('App has init-ed!');
     console.log('inspecting data loaded from localStorage', this.userData);
-    const exampleListItem = this.view.createListItem(this.userData.projects[0].todos[0]);
-    this.view.addItemToList(exampleListItem);
+
     this.view.updateElementText('#project-title', this.userData.projects[0].title);
+    // const exampleListItem = this.view.createListItem(this.userData.projects[0].todos[0]);
+    // this.view.addItemToList(exampleListItem);
+    
+    this.view.populateList(this.userData.projects[0].todos);
   }
 }

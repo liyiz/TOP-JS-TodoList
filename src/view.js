@@ -23,9 +23,24 @@ export class View
     const headerDiv = this.createHeaderElement();
     const todosList = this.createListHolder();
 
+    // this.populateList();
+
     section.append(headerDiv, todosList);
 
     return section;
+  }
+
+  populateList(data) {
+    // parameter expects array of todo objects
+
+    // Create each todo's html element
+    const todoListElems = data.map(item => {
+      const todo = this.createListItem(item);
+      return todo;
+    });
+    // Add each html element to the todo list holder
+    todoListElems.forEach(el => this.addItemToList(el));
+
   }
 
   createHeaderElement() {
@@ -51,6 +66,7 @@ export class View
     ul.id = 'todos-list';
 
     // const newLi = this.createListItem();
+
 
     return ul;
   }
