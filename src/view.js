@@ -33,6 +33,7 @@ export class View
     const headerDiv = document.createElement('div');
     headerDiv.classList.add('project-header');
     const headerH1 = document.createElement('h1');
+    headerH1.id = 'project-title';
     headerH1.innerText = 'Project Title Undefined';
     const headerBtn = document.createElement('button');
     headerBtn.innerText = '+ Add Task';
@@ -68,9 +69,9 @@ export class View
     listHolder.append(item);
   }
 
-  updateProjectTitle(newTitle) {
-    const headerTitle = document.querySelector('.project-header > h1');
-    headerTitle.innerText = newTitle;
+  updateElementText(query, text) {
+    const element = document.querySelector(query);
+    element.innerText = text;
   }
 
 }
